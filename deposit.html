@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:title" content="busdcompound.curve.fi" />
+    <meta property="og:url" content="https://compound.curve.fi" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="A curve.fi portal for swapping cDAI/cUSDC" />
+    <meta property="og:image" content="./assets/compoundcurve_preview.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="compound.curve.fi" />
+    <meta name="twitter:site" content="@CurveFinance" />
+    <meta name="twitter:creator" content="@CurveFinance" />
+    <meta name="twitter:description" content="A curve.fi portal for swapping cDAI/cUSDC"/>
+    <meta name="twitter:url" content="https://compound.curve.fi" />
+    <meta name="twitter:image" content="./assets/compoundcurve_preview.png" />
+    <title>Curve.fi :: Compounded</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?rev=21bf4389b9b74ab0f6cac72ef908addb">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png?rev=193353be20b284e80619a260968db7aa">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png?rev=f30faa950b2b49eeffcaad8d774f6b10">
+    <link rel="mask-icon" href="assets/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" href="tvision.css?rev=3eda33f4fa54fe61a0ff034c823d8320" />
+    <script src="https://browser.sentry-cdn.com/5.13.0/bundle.min.js" integrity="sha384-ePH2Cp6F+/PJbfhDWeQuXujAbpil3zowccx6grtsxOals4qYqJzCjeIa7W2UqunJ" crossorigin="anonymous">
+    </script>
+    <script src='https://browser.sentry-cdn.com/5.13.0/captureconsole.min.js'></script>
+    <script src="jquery.min.js"></script>
+    <script src="dist/bn.js"></script>
+    <script src="bigNumber.min.js"></script>
+    <script src="abis.js"></script>
+    <script src="config.js"></script>
+    <script src="dist/wallet.js"></script>
+    <script src="common.js"></script>
+    <script src="init.js"></script>
+    <script src="/deposit.js?rev=aa1c16c8af625725568bbeeaf84a219d"></script>
+</head>
+<body>
+<div class="top-menu-bar">
+    <label for="hamburger" class='border-menu'></label>
+    <input type="checkbox" id="hamburger"/>
+
+    <a href="/">Buy and sell</a>
+    <a href="/deposit.html">Deposit</a>
+<!--    <a href="/withdraw.html">Withdraw</a>-->
+
+</div>
+<div id="screen">
+    <div class="blue window">
+        <h1><img src="/logo.svg" alt="🌀 Curve" height="50"></h1>
+    </div>
+    <div class="error window half-width info" id="error-window"></div>
+
+    <div class="window white add-liquidity">
+        <fieldset class="currencies">
+            <legend>Currencies:</legend>
+            <ul>
+                <li>
+                    <input id="sync-balances" type="checkbox" name="sync-balances" checked>
+                    <label for="sync-balances">Add all coins in a balanced proportion</label>
+                </li>
+                <li>
+                    <label for="currency_0">Token A</label>
+                    <input type="text" id="currency_0" disabled name="from_cur" value="0.00">
+                </li>
+                <li>
+                    <label for="currency_1">Token B</label>
+                    <input type="text" id="currency_1" disabled name="from_cur" value="0.00">
+                </li>
+                <li>
+                    <label for="currency_2">Token C</label>
+                    <input type="text" id="currency_2" disabled name="from_cur" value="0.00">
+                </li>
+            </ul>
+        </fieldset>
+        <ul>
+            <li>
+                <input id="max-balances" type="checkbox" name="max-balances" checked>
+                <label for="max-balances">Use maximum amount of coins available</label>
+            </li>
+            <li>
+                <input id="inf-approval" type="checkbox" name="inf-approval" checked>
+                <label for="inf-approval">Infinite approval - trust this contract forever</label>
+            </li>
+        </ul>
+
+        <p style="text-align: center">
+            <button id="add-liquidity">Deposit</button>
+            <button id="migrate-new">Migrate</button>
+        <p class='simple-error' id='highslippage-warning'><span class='text'>Warning! High slippage</span>: <span class='percent'></span>%</p>
+        <p class='success' id='bonus-window'>Bonus: <span></span>%</p>
+        </p>
+    </div>
+</div>
+
+<div class="blue window half-width info">
+    <fieldset id="lp-info-currency">
+        <legend>Currency reserves</legend>
+        <ul id='balances-info'>
+            <li><b>Token A:</b> <span></span></li>
+            <li><b>Token B:</b> <span></span></li>
+            <li><b>Token C:</b> <span></span></li>
+            <li><b>A + B + C:</b> <span></span></li>
+        </ul>
+        <p><b>Fee:</b> <span id='fee-info'></span>%</p>
+        <p><b>Admin fee:</b> <span id='admin-fee-info'></span>%</p>
+    </fieldset>
+    <fieldset id="lp-info-container">
+        <legend>My share:</legend>
+        <ul id='lp-info'>
+            <li><b>Token A:</b> <span></span></li>
+            <li><b>Token B:</b> <span></span></li>
+            <li><b>Token C:</b> <span></span></li>
+            <li><b>A + B + C:</b> <span></span></li>
+        </ul>
+    </fieldset>
+</div>
+
+</body>
+</html>

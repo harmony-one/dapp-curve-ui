@@ -8,7 +8,7 @@ let CONFIG = {
 
     numCoins: 3,
     // TODO: change back to 1e18
-    coinPrecision: [1, 1, 1],
+    coinPrecision: [1e18, 1e18, 1e18],
 
     gasPrice: 0x4a817c800,
     gasLimit: 0x6691b7,

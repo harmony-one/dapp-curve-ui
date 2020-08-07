@@ -1,6 +1,6 @@
 const {HarmonyExtension} = require('@harmony-js/core')
 const {ChainType} = require('@harmony-js/utils')
-const {HarmonyAddress} = require('@harmony-js/crypto')
+const { fromBech32 } = require('@harmony-js/crypto')
 const {Messenger, Provider} = require('@harmony-js/network')
 
 /**
@@ -37,12 +37,7 @@ async function getExtension(config) {
     return ext
 }
 
-function oneToEthAddr(addr) {
-    let a = new HarmonyAddress(addr)
-    return '0x' + a.basic
-}
-
 module.exports = {
     getExtension: getExtension,
-    oneToEthAddr: oneToEthAddr,
+    oneToEthAddr: fromBech32,
 }

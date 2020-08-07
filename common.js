@@ -3,6 +3,10 @@ var BN = (val) => new bn(val)
 const trade_timeout = 1800;
 const max_allowance = BN(2).pow(BN(256)).sub(BN(1));
 
+function convertBN(val) {
+    return cBN(val.toString())
+}
+
 
 async function init_contracts() {
     if (EXT == null){
@@ -48,6 +52,7 @@ function init_menu() {
 }
 
 async function update_rate_and_fees() {
+    console.log('=================')
     console.log("update fee", SWAP)
     let swap = SWAP
     let swapToken = SWAP_TOKEN
@@ -66,17 +71,21 @@ async function update_rate_and_fees() {
     let resolves = await Promise.all(promises)
     bal_info_fees.map((i, el)=>$(el).removeClass('loading line'))
     resolves.forEach((balance, i) => {
-        console.log(balance.toString())
-        BALANCES[i] = balance.toNumber() / CONFIG.coinPrecision[i]
-        console.log(i, "balance:", balance.toNumber())
+        BALANCES[i] = cBN(balance.toString()) / CONFIG.coinPrecision[i]
+        console.log(i, "balance:", BALANCES[i])
         $(bal_info[i]).text(BALANCES[i].toFixed(2));
         total += BALANCES[i];
     })
     $(bal_info[numCoins]).text(total.toFixed(2));
 
     // Display fee and admin fees
-    FEE = parseInt(await swap.methods.fee().call(CALL_OPTION)) / 1e10;
-    ADMIN_FEE = parseInt(await swap.methods.admin_fee().call(CALL_OPTION)) / 1e10;
+    let rawFee = await swap.methods.fee().call(CALL_OPTION)
+    console.log("raw fee", rawFee.toString())
+    FEE = cBN(rawFee.toString()) / 1e10
+
+    let rawAdminFee = await swap.methods.admin_fee().call(CALL_OPTION)
+    console.log("raw admin fee", rawAdminFee.toString())
+    ADMIN_FEE = cBN(rawFee.toString()) / 1e10;
     $('#fee-info').text((FEE * 100).toFixed(3));
     $('#admin-fee-info').text((ADMIN_FEE * 100).toFixed(3));
 
@@ -86,9 +95,11 @@ async function update_rate_and_fees() {
     }
 
     let addr = ETH_ADDR
-    let token_balance = parseInt(await swapToken.methods.balanceOf(addr).call(CALL_OPTION));
+    let raw_token_balance = await swapToken.methods.balanceOf(addr).call(CALL_OPTION)
+    let token_balance = cBN(raw_token_balance.toString());
     if (token_balance > 0) {
-        let token_supply = parseInt(await swapToken.methods.totalSupply().call(CALL_OPTION));
+        let raw_token_supply = await swapToken.methods.totalSupply().call(CALL_OPTION)
+        let token_supply = cBN(raw_token_supply.toString());
         let l_info = $('#lp-info li span');
         total = 0;
         for (let i=0; i < numCoins; i++) {
@@ -149,7 +160,7 @@ async function ensure_underlying_allowance(i, _amount) {
 
     if ((current_allowance.gt(BN(0))) & (current_allowance.lt(amount)))
         return
-    amount = amount.toString()
+    amount = BN(amount.toString())
     console.log("approve", amount.toString())
     return approve(UL_COINS[i], amount, default_account);
 }

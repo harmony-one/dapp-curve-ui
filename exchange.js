@@ -5,7 +5,7 @@ async function set_from_amount(i) {
     var default_account = ETH_ADDR;
     var el = $('#from_currency');
     let rawBalance = await UL_COINS[i].methods.balanceOf(default_account).call(CALL_OPTION)
-    let balance = rawBalance.toNumber()
+    let balance = convertBN(rawBalance)
     let amount = Math.floor(
         100 * parseFloat(balance) / CONFIG.coinPrecision[i]
     ) / 100
@@ -20,7 +20,7 @@ async function set_from_amount(i) {
 async function set_max_balance() {
     var default_account = ETH_ADDR;
     let rawBalance = await UL_COINS[fromCurrency].methods.balanceOf(default_account).call(CALL_OPTION);
-    let balance = rawBalance.toNumber()
+    let balance = convertBN(rawBalance)
     let amount = Math.floor(
         100 * parseFloat(balance) / CONFIG.coinPrecision[fromCurrency]
     ) / 100
@@ -32,7 +32,7 @@ async function highlight_input() {
     let default_account = ETH_ADDR;
     let el = $('#from_currency');
     let rawBalance = await UL_COINS[fromCurrency].methods.balanceOf(default_account).call(CALL_OPTION)
-    let balance = parseFloat(rawBalance.toNumber()) / CONFIG.coinPrecision[fromCurrency];
+    let balance = parseFloat(convertBN(rawBalance)) / CONFIG.coinPrecision[fromCurrency];
     if (el.val() > balance)
         el.css('background-color', 'red')
     else
@@ -55,7 +55,7 @@ async function set_to_amount() {
             if(isNaN(exchange_rate)) exchange_rate = "Not available"
             var default_account = ETH_ADDR;
             let rawBalance = await UL_COINS[toCurrency].methods.balanceOf(default_account).call(CALL_OPTION);
-            let balance = rawBalance.toNumber()
+            let balance = convertBN(rawBalance)
             let amount = Math.floor(
                 100 * parseFloat(balance) / CONFIG.coinPrecision[toCurrency]
             ) / 100
@@ -140,7 +140,7 @@ async function handle_trade() {
     var i = fromCurrency;
     var j = toCurrency;
     var raw = await SWAP.methods.balances(i).call(CALL_OPTION)
-    let b = raw.toNumber()
+    let b = convertBN(raw)
     var max_slippage = $("#max_slippage > input[type='radio']:checked").val();
     if(max_slippage == '-') {
         max_slippage = $("#custom_slippage_input").val() / 100;
