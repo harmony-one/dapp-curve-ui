@@ -1,0 +1,17 @@
+{
+  "name": "curve",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@harmony-js/core": "^0.1.49",
+    "@harmony-js/crypto": "^0.1.48",
+    "@harmony-js/network": "^0.1.45",
+    "@harmony-js/utils": "^0.1.45",
+    "bignumber": "^1.1.0",
+    "browserify": "^16.5.2",
+    "core-util-is": "^1.0.2",
+    "dotenv": "^8.1.0",
+    "openzeppelin-solidity": "^2.2.0",
+    "tslib": "^1.10.0"
+  }
+}
