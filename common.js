@@ -1,3 +1,9 @@
+var cBN = (val) => new BigNumber(val);
+var BN = (val) => new bn(val)
+const trade_timeout = 1800;
+const max_allowance = BN(2).pow(BN(256)).sub(BN(1));
+
+
 async function init_contracts() {
     if (EXT == null){
         console.error("call init_contracts before init extension")
@@ -15,11 +21,13 @@ async function init_contracts() {
     for (let i = 0; i < CONFIG.numCoins; i++) {
         promises.push(
             swap.methods.coins(i).call(CALL_OPTION).then((addr) => {
+                console.log("coin addr", addr)
                 coins[i] = contractFactory.createContract(ERC20_abi, addr)
             })
         )
         promises.push(
             swap.methods.underlying_coins(i).call(CALL_OPTION).then((addr) => {
+                console.log("underlying addr", addr)
                 ul_coins[i] = contractFactory.createContract(ERC20_abi, addr)
             })
         )
@@ -58,8 +66,9 @@ async function update_rate_and_fees() {
     let resolves = await Promise.all(promises)
     bal_info_fees.map((i, el)=>$(el).removeClass('loading line'))
     resolves.forEach((balance, i) => {
-        BALANCES[i] = balance.toNumber()
-        console.log("i, balance:", balance)
+        console.log(balance.toString())
+        BALANCES[i] = balance.toNumber() / CONFIG.coinPrecision[i]
+        console.log(i, "balance:", balance.toNumber())
         $(bal_info[i]).text(BALANCES[i].toFixed(2));
         total += BALANCES[i];
     })
@@ -91,4 +100,72 @@ async function update_rate_and_fees() {
         $('#lp-info-container').show();
     }
 }
+
+function debounced(delay, fn) {
+    let timerId;
+    return function (...args) {
+        if (timerId) {
+            clearTimeout(timerId);
+        }
+        timerId = setTimeout(() => {
+            fn(...args);
+            timerId = null;
+        }, delay);
+    }
+}
+
+function makeCancelable(promise) {
+    let rejectFn;
+
+    const wrappedPromise = new Promise((resolve, reject) => {
+        rejectFn = reject;
+
+        Promise.resolve(promise)
+            .then(resolve)
+            .catch(reject);
+    });
+
+    wrappedPromise.cancel = (reason) => {
+        rejectFn({ canceled: true, reason: reason });
+    };
+
+    return wrappedPromise;
+};
+
+async function ensure_underlying_allowance(i, _amount) {
+    var default_account = ETH_ADDR;
+    var amount = BN(_amount);
+    var rawAllowance = await UL_COINS[i].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION)
+    let current_allowance = BN(rawAllowance)
+
+    console.log("cur allowance", current_allowance.toString())
+
+    if (current_allowance.eq(amount))
+        return false;
+    console.log("ensure_underlying_allowance 2")
+    if ((BN(_amount).eq(max_allowance)) & (current_allowance.gt(max_allowance.div(BN(2)))))
+        return false;  // It does get spent slowly, but that's ok
+    console.log("ensure_underlying_allowance 3")
+
+    if ((current_allowance.gt(BN(0))) & (current_allowance.lt(amount)))
+        return
+    amount = amount.toString()
+    console.log("approve", amount.toString())
+    return approve(UL_COINS[i], amount, default_account);
+}
+
+function approve(contract, amount, account) {
+    return new Promise(resolve => {
+        contract.methods.approve(CONFIG.swapContract, amount)
+            .send({
+                gasPrice: CONFIG.gasPrice,
+                gasLimit: CONFIG.gasLimit,
+            })
+            .once('transactionHash', function(hash) {
+                console.log("transactionHash")
+                resolve(true);
+            });
+    });
+}
+
 

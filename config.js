@@ -7,7 +7,8 @@ let CONFIG = {
     swapContract: "0xb0f725c8c7534dba32ae2870145aa3b2c2fde9dc",
 
     numCoins: 3,
-    coinPrecision: [1e18, 1e18, 1e18],
+    // TODO: change back to 1e18
+    coinPrecision: [1, 1, 1],
 
     gasPrice: 0x4a817c800,
     gasLimit: 0x6691b7,

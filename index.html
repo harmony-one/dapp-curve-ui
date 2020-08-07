@@ -24,9 +24,10 @@
     <script src="https://browser.sentry-cdn.com/5.13.0/bundle.min.js" integrity="sha384-ePH2Cp6F+/PJbfhDWeQuXujAbpil3zowccx6grtsxOals4qYqJzCjeIa7W2UqunJ" crossorigin="anonymous">
     </script>
     <script src='https://browser.sentry-cdn.com/5.13.0/captureconsole.min.js'></script>
-    <script src="/jquery.min.js"></script>
-    <script src="/bigNumber.min.js"></script>
-    <script src="/abis.js"></script>
+    <script src="jquery.min.js"></script>
+    <script src="dist/bn.js"></script>
+    <script src="bigNumber.min.js"></script>
+    <script src="abis.js"></script>
     <script src="config.js"></script>
     <script src="dist/wallet.js"></script>
     <script src="common.js"></script>
@@ -42,74 +43,82 @@
 <!--    <a href="/deposit.html">Deposit</a>-->
 <!--    <a href="/withdraw.html">Withdraw</a>-->
 </div>
-<!--<div id="screen">-->
-<!--    <div class="blue window">-->
-<!--        <h1><img src="/logo.svg" alt="🌀 Curve" height="50"></h1>-->
-<!--    </div>-->
-<!--    <div class="error window half-width info" id="error-window"></div>-->
+<div id="screen">
+    <div class="blue window">
+        <h1><img src="assets/logo.svg" alt="🌀 Curve" height="50"></h1>
+    </div>
+    <div class="error window half-width info" id="error-window"></div>
 
-<!--    <div class="window white">-->
-<!--        <div style="display: table; margin: auto">-->
-<!--            <fieldset style="float: left">-->
-<!--                <legend>From:</legend>-->
-<!--                <div class='maxbalance'>Max: <span></span> </div>-->
-<!--                <ul>-->
-<!--                    <li>-->
-<!--                        <input type="text" id="from_currency" disabled name="from_currency" value='0.00'>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <input type="radio" id="from_cur_0" name="from_cur" value="0">-->
-<!--                        <label for="from_cur_0">DAI</label>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <input type="radio" id="from_cur_1" name="from_cur" value="1">-->
-<!--                        <label for="from_cur_1">USDC</label>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </fieldset>-->
-<!--            <fieldset style="float: left">-->
-<!--                <legend>To:</legend>-->
-<!--                <div class='maxbalance'>Max: <span></span> </div>-->
-<!--                <ul>-->
-<!--                    <li>-->
-<!--                        <input type="text" id="to_currency" name="to_currency" value="0.00" disabled>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <input type="radio" id="to_cur_0" name="to_cur" value="0">-->
-<!--                        <label for="to_cur_0">DAI</label>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <input type="radio" id="to_cur_1" name="to_cur" value="1">-->
-<!--                        <label for="to_cur_1">USDC</label>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </fieldset>-->
-<!--            <div class='clearfix'></div>-->
-<!--            <p class='exchange-rate'>Exchange rate (including fees): <span id="exchange-rate"></span></p>-->
-<!--            <div id='max_slippage'><span>Max slippage:</span>-->
-<!--                <input id="slippage05" type="radio" name="slippage" value='0.005'>-->
-<!--                <label for="slippage05">0.5%</label>-->
+    <div class="window white">
+        <div style="display: table; margin: auto">
+            <fieldset style="float: left">
+                <legend>From:</legend>
+                <div class='maxbalance'>Max: <span></span> </div>
+                <ul>
+                    <li>
+                        <input type="text" id="from_currency" disabled name="from_currency" value='0.00'>
+                    </li>
+                    <li>
+                        <input type="radio" id="from_cur_0" name="from_cur" value="0">
+                        <label for="from_cur_0">Token A</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="from_cur_1" name="from_cur" value="1">
+                        <label for="from_cur_1">Token B</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="from_cur_2" name="from_cur" value="2">
+                        <label for="from_cur_2">Token C</label>
+                    </li>
+                </ul>
+            </fieldset>
+            <fieldset style="float: left">
+                <legend>To:</legend>
+                <div class='maxbalance'>Max: <span></span> </div>
+                <ul>
+                    <li>
+                        <input type="text" id="to_currency" name="to_currency" value="0.00" disabled>
+                    </li>
+                    <li>
+                        <input type="radio" id="to_cur_0" name="to_cur" value="0">
+                        <label for="to_cur_0">Token A</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="to_cur_1" name="to_cur" value="1">
+                        <label for="to_cur_1">Token B</label>
+                    </li>
+                    <li>
+                        <input type="radio" id="to_cur_2" name="to_cur" value="2">
+                        <label for="to_cur_2">Token C</label>
+                    </li>
+                </ul>
+            </fieldset>
+            <div class='clearfix'></div>
+            <p class='exchange-rate'>Exchange rate (including fees): <span id="exchange-rate"></span></p>
+            <div id='max_slippage'><span>Max slippage:</span>
+                <input id="slippage05" type="radio" name="slippage" value='0.005'>
+                <label for="slippage05">0.5%</label>
 
-<!--                <input id="slippage1" type="radio" name="slippage" checked value='0.01'>-->
-<!--                <label for="slippage1">1%</label>-->
+                <input id="slippage1" type="radio" name="slippage" checked value='0.01'>
+                <label for="slippage1">1%</label>
 
-<!--                <input id="custom_slippage" type="radio" name="slippage" value='-'>-->
-<!--                <label for="custom_slippage">-->
-<!--                    <input type="text" id="custom_slippage_input" disabled name="custom_slippage_input"> %-->
-<!--                </label>-->
-<!--            </div>-->
-<!--            <ul>-->
-<!--                <li>-->
-<!--                    <input id="inf-approval" type="checkbox" name="inf-approval" checked>-->
-<!--                    <label for="inf-approval">Infinite approval - trust this contract forever</label>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            <p class='trade-buttons'>-->
-<!--                <button id="trade">Sell</button>-->
-<!--            </p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+                <input id="custom_slippage" type="radio" name="slippage" value='-'>
+                <label for="custom_slippage">
+                    <input type="text" id="custom_slippage_input" disabled name="custom_slippage_input"> %
+                </label>
+            </div>
+            <ul>
+                <li>
+                    <input id="inf-approval" type="checkbox" name="inf-approval" checked>
+                    <label for="inf-approval">Infinite approval - trust this contract forever</label>
+                </li>
+            </ul>
+            <p class='trade-buttons'>
+                <button id="trade">Sell</button>
+            </p>
+        </div>
+    </div>
+</div>
 
 <div class="blue window half-width info">
     <fieldset id="lp-info-currency">
@@ -118,7 +127,7 @@
             <li><b>Token A:</b> <span></span></li>
             <li><b>Token B:</b> <span></span></li>
             <li><b>Token C:</b> <span></span></li>
-            <li><b>Token A + Token B + Token C:</b> <span></span></li>
+            <li><b>A + B + C:</b> <span></span></li>
         </ul>
         <p><b>Fee:</b> <span id='fee-info'></span>%</p>
         <p><b>Admin fee:</b> <span id='admin-fee-info'></span>%</p>

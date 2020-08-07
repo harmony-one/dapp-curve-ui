@@ -8,6 +8,7 @@
     "@harmony-js/network": "^0.1.45",
     "@harmony-js/utils": "^0.1.45",
     "bignumber": "^1.1.0",
+    "bn.js": "^4.11.3",
     "browserify": "^16.5.2",
     "core-util-is": "^1.0.2",
     "dotenv": "^8.1.0",
