@@ -207,7 +207,6 @@ async function approve(contract, amount, account) {
         // .then( () => {
         //     console.log("proof sent")
         // }
-    )
 }
 
 async function calc_slippage(deposit) {
@@ -246,8 +245,7 @@ async function calc_slippage(deposit) {
         slippage = Sr / Sv;
     slippage = slippage - 1;
     slippage = slippage || 0
-    // console.log("end calculating slip" +
-        "page", slippage)
+    // console.log("end calculating slip page", slippage)
     if(slippage < -0.005) {
         $("#bonus-window").hide();
         $("#highslippage-warning").removeClass('info-message').addClass('simple-error');
