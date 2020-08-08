@@ -151,8 +151,9 @@ async function handle_remove_liquidity() {
 
 async function init_ui() {
     for (let i = 0; i < CONFIG.numCoins; i++) {
-        $('#currency_' + i).focus(handle_change_amounts(i));
-        $('#currency_' + i).on('input', debounced(100, handle_change_amounts(i)));
+        $('#currency_' + i).prop('disabled', true)
+        // $('#currency_' + i).focus(handle_change_amounts(i));
+        // $('#currency_' + i).on('input', debounced(100, handle_change_amounts(i)));
     }
     $('#liquidity-share').focus(handle_change_share);
     $('#liquidity-share').on('input', handle_change_share);
@@ -165,6 +166,7 @@ async function init_ui() {
 }
 
 window.addEventListener('load', async () => {
+
     await initWallet();
     await init_contracts()
     await update_rate_and_fees();
