@@ -25,18 +25,54 @@ body {
     margin: 0;
 }
 
+.dai-icon {
+    display: inline-block;
+    width: 30px;
+    background: red;
+    padding: 0;
+    margin: 0;
+    background: url(assets/dai.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.usdt-icon {
+    display: inline-block;
+    width: 30px;
+    background: red;
+    padding: 0;
+    margin: 0;
+    background: url(assets/usdt.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.busd-icon {
+    display: inline-block;
+    width: 30px;
+    background: red;
+    padding: 0;
+    margin: 0;
+    background: url(assets/busd.png);
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .arrows {
     padding:10px;
 }
 
 .arrows img {
     width:40px;
-    margin-top:40px;
+    margin-top:70px;
 }
 
 .logo {
     text-align: center;
-    margin-top: 50px;
+    margin-top: 90px;
 }
 
 .window {
@@ -161,6 +197,12 @@ li {
     list-style: none;
     line-height: 30px;
 
+
+}
+
+.li-flex {
+    display: flex;
+    padding: 8px 8px 8px 0;
 }
 
 .top-menu-bar {
