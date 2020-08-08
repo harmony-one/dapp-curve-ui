@@ -125,8 +125,10 @@ async function handle_remove_liquidity() {
     // var default_account = (await web3provider.eth.getAccounts())[0];
     if (share_val == '---') {
         let token_amount = await SWAP.methods.calc_token_amount(amounts, false).call(CALL_OPTION);
-        console.log("token amount", token_amount.toString())
+
+        token_amount = token_amount.mul(BN(101)).div(BN(1000))
         console.log("wallet balance", token_balance.toString())
+        console.log("token amount", token_amount.toString())
         await SWAP.methods.remove_liquidity_imbalance(amounts, token_amount).send(CALL_OPTION);
     }
     else {

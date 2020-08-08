@@ -8,7 +8,6 @@ function convertBN(val) {
     return cBN(val.toString())
 }
 
-
 async function init_contracts() {
     if (EXT == null){
         console.error("call init_contracts before init extension")
@@ -224,7 +223,7 @@ async function calc_slippage(deposit) {
 
     console.log("virtual_price", virtual_price, virtual_price.toString())
     console.log("token_amount", token_amount, token_amount.toString())
-    var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(48)));
+    var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(36)));
     console.log("bn Sv", Sv.toString())
     Sv = convertBN(Sv)
 
