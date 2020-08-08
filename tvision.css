@@ -10,10 +10,9 @@
 
 html {
     background-image: url(assets/bg.png);
-    background-position: left bottom;
-    background-repeat: no-repeat;
+    background-position: top;
+    background-repeat: round;
     background-attachment: fixed;
-    height: 100%;
     width: 100%;
     font-family: Nunito, sans-serif !important;
     font-weight: bold;
@@ -23,6 +22,7 @@ html {
 body {
     padding: 0;
     margin: 0;
+    text-align: center;
 }
 
 .dai-icon {
@@ -250,13 +250,27 @@ li {
     display: block;
 }
 
+.exchange-panel {
+    float:left
+}
+
+/*
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
-    .top-menu-bar a, .top-menu-bar .icon-container {
+    .exchange-panel {
+        float:none;
+    }
+
+    .arrows {
+        display: none;
+    }
+
+   !* .top-menu-bar a, .top-menu-bar .icon-container {
         display: block;
         margin: 0;
         padding: 0.5em 0;
-    }
+    }*!
 }
+*/
 
 div.add-liquidity input {
     margin-bottom: 0.5em;
@@ -293,11 +307,11 @@ p.exchange-rate {
     display: flex;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+/*@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     .info {
         flex-direction: column;
     }
-}
+}*/
 
 .info > fieldset {
     flex: 1;
@@ -318,7 +332,7 @@ div.info table td {
     vertical-align: top;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+/*@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     div.info table td {
         display: block;
     }
@@ -351,7 +365,7 @@ div.info table td {
         display: block;
     }
 
-    /*fix selector priority*/
+    !*fix selector priority*!
     .top-menu-bar.top-menu-bar #poolsdropdown:hover .dropdown {
         display: none;
     }
@@ -359,9 +373,9 @@ div.info table td {
     #poolsdropdown > a:after {
         content: " Pools";
     }
-}
+}*/
 
-@media only screen and (max-device-width: 640px) {
+/*@media only screen and (max-device-width: 640px) {
     span.poolstext, .pools {
         width: auto;
     }
@@ -373,7 +387,7 @@ div.info table td {
     span.pools {
         display: block;
     }
-}
+}*/
 
 .icon-container {
     height: 15px;
@@ -400,11 +414,11 @@ div.info table td {
     width: 30px;
 }
 
-@media only screen and (min-device-width: 480px) {
+/*@media only screen and (min-device-width: 480px) {
     .border-menu {
         display: none;
     }
-}
+}*/
 
 legend {
     padding: 0 !important;
@@ -618,7 +632,7 @@ fieldset:nth-child(2) .maxbalance {
     clear: both;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+/*@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
     p.exchange-rate {
         text-align: left;
     }
@@ -631,7 +645,7 @@ fieldset:nth-child(2) .maxbalance {
     #max_slippage > * {
         width: 100%;
     }
-}
+}*/
 
 
 [type="radio"]:checked,
