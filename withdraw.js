@@ -64,7 +64,7 @@ function handle_change_amounts() {
                 $('[id^=currency_]').css('background-color', 'red');
             }
             else {
-                $('[id^=currency_]').css('background-color', 'blue');
+                $('[id^=currency_]').css('background-color', '#036574');
             }
             await calc_slippage(false);
 
@@ -85,7 +85,7 @@ function handle_change_share() {
     var val = share.val();
 
     console.log("handle change share")
-    share.css('background-color', 'blue');
+    share.css('background-color', '#036574');
     share.css('color', 'aqua');
     if (val == '---') {
         share.val('0.0');
