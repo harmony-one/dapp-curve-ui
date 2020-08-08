@@ -214,13 +214,17 @@ async function calc_slippage(deposit) {
     var real_values = [...$("[id^=currency_]")].map((x,i) => +($(x).val()));
     var Sr = real_values.reduce((a,b) => a+b, 0);
 
-    var values = real_values.map((x,i) => cBN(Math.floor(x).toString()).toFixed(0,1));
+    let values = new Array(CONFIG.numCoins)
+    for (let i = 0; i < CONFIG.numCoins; i++) {
+        values[i] = valToBN(real_values[i], CONFIG.coinPrecision[i])
+        console.log("values[i]", values[i].toString())
+    }
     var token_amount = await SWAP.methods.calc_token_amount(values, deposit).call(CALL_OPTION);
     var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
 
-    console.log("virtual_price", virtual_price.toString())
-    console.log("token_amount", token_amount.toString())
-    var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(36)));
+    console.log("virtual_price", virtual_price, virtual_price.toString())
+    console.log("token_amount", token_amount, token_amount.toString())
+    var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(48)));
     console.log("bn Sv", Sv.toString())
     Sv = convertBN(Sv)
 
