@@ -148,7 +148,7 @@ async function handle_trade() {
     console.log("handle_trader", 1)
     if (b >= 0.001) {
         var dx = Math.floor($('#from_currency').val() * CONFIG.coinPrecision[i]);
-        var min_dy = Math.floor($('#to_currency').val() * (1-max_slippage) * CONFIG.coinPrecision[j]);
+        var min_dy = Math.floor($('#to_currency').val() * (1-max_slippage) * CONFIG.coinPrecision[j] * 0.99);
         var deadline = Math.floor((new Date()).getTime() / 1000) + trade_timeout;
         dx = BN(dx.toString())
         console.log("handle_trader", 2)
@@ -158,7 +158,11 @@ async function handle_trade() {
             await ensure_underlying_allowance(i, dx);
         console.log("handle_trader", 3)
         min_dy = BN(min_dy.toString());
-        await SWAP.methods.exchange_underlying(i, j, dx, min_dy).send({
+        console.log("trade dx", dx.toString())
+        console.log("trade dy", min_dy.toString())
+        let allowance = await COINS[i].methods.allowance(ETH_ADDR, CONFIG.swapContract).call(CALL_OPTION)
+        console.log("before exchange", allowance.toString())
+        await SWAP.methods.exchange_underlying(i, j, dx.toString(), min_dy.toString()).send({
             gasPrice: CONFIG.gasPrice,
             gasLimit: CONFIG.gasLimit,
         });
@@ -196,7 +200,7 @@ async function init_ui() {
 }
 
 window.addEventListener('load', async() => {
-    await init()
+    await initWallet()
     await init_contracts()
     await init_ui()
 

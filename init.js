@@ -1,4 +1,4 @@
-async function init(type) {
+async function initWallet(type) {
     if(!type) init_menu();
 
     if (EXT == null || WALLET == null ) {

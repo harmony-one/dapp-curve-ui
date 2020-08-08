@@ -2,6 +2,7 @@ var cBN = (val) => new BigNumber(val);
 var BN = (val) => new bn(val)
 const trade_timeout = 1800;
 const max_allowance = BN(2).pow(BN(256)).sub(BN(1));
+let wallet_balance = new Array(CONFIG.numCoins)
 
 function convertBN(val) {
     return cBN(val.toString())
@@ -151,32 +152,123 @@ async function ensure_underlying_allowance(i, _amount) {
 
     console.log("cur allowance", current_allowance.toString())
 
-    if (current_allowance.eq(amount))
+    if (current_allowance.eq(amount)){
+        console.log("allowance exactly the same. return")
         return false;
-    console.log("ensure_underlying_allowance 2")
-    if ((BN(_amount).eq(max_allowance)) & (current_allowance.gt(max_allowance.div(BN(2)))))
+    }
+
+    if ((BN(_amount).eq(max_allowance)) & (current_allowance.gt(max_allowance.div(BN(2))))) {
+        console.log("infinite trust already given")
         return false;  // It does get spent slowly, but that's ok
-    console.log("ensure_underlying_allowance 3")
+    }
+    // console.log("before reset allowance")
+    // if ((current_allowance.gt(BN(0))) & (current_allowance.lt(amount)))
+    //     console.log("resetting allowance")
+    //     await approve(UL_COINS[i], '0', default_account);
 
-    if ((current_allowance.gt(BN(0))) & (current_allowance.lt(amount)))
-        return
-    amount = BN(amount.toString())
     console.log("approve", amount.toString())
-    return approve(UL_COINS[i], amount, default_account);
+    await approve(UL_COINS[i], amount.toString(), default_account);
 }
 
-function approve(contract, amount, account) {
-    return new Promise(resolve => {
-        contract.methods.approve(CONFIG.swapContract, amount)
-            .send({
-                gasPrice: CONFIG.gasPrice,
-                gasLimit: CONFIG.gasLimit,
-            })
-            .once('transactionHash', function(hash) {
-                console.log("transactionHash")
-                resolve(true);
-            });
-    });
+async function ensure_allowance(amounts) {
+    var default_account = ETH_ADDR;
+    var allowances = new Array(CONFIG.numCoins);
+    for (let i=0; i < CONFIG.numCoins; i++)
+        allowances[i] = await COINS[i].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION);
+
+    if (amounts) {
+        // Non-infinite
+        for (let i=0; i < CONFIG.numCoins; i++) {
+            if (allowances[i].lt(amounts[i])) {
+                console.log("ensure allowance", i, amounts[i].toString())
+                // if (allowances[i] > 0)
+                //     await approve(COINS[i], BN(0), default_account);
+                await approve(COINS[i], amounts[i], default_account);
+            }
+        }
+    }
+    else {
+        // Infinite
+        for (let i=0; i < CONFIG.numCoins; i++) {
+            if (allowances[i].lt(max_allowance.div(BN(2)))) {
+                // if (allowances[i] > 0)
+                //     await approve(COINS[i], BN(0), default_account);
+                await approve(COINS[i], BN(max_allowance.toString()), default_account);
+            }
+        }
+    }
 }
 
+async function approve(contract, amount, account) {
+    return contract.methods.approve(CONFIG.swapContract, amount)
+        .send({
+            gasPrice: CONFIG.gasPrice,
+            gasLimit: CONFIG.gasLimit,
+        }).then( () => {
+            console.log("proof sent")
+    })
+}
+
+async function calc_slippage(deposit) {
+    console.log("calc_slippage")
+    var real_values = [...$("[id^=currency_]")].map((x,i) => +($(x).val()));
+    var Sr = real_values.reduce((a,b) => a+b, 0);
+
+    var values = real_values.map((x,i) => cBN(Math.floor(x).toString()).toFixed(0,1));
+    var token_amount = await SWAP.methods.calc_token_amount(values, deposit).call(CALL_OPTION);
+    var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
+
+    console.log("virtual_price", virtual_price.toString())
+    console.log("token_amount", token_amount.toString())
+    var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(36)));
+    console.log("bn Sv", Sv.toString())
+    Sv = convertBN(Sv)
+
+    for(let i = 0; i < CONFIG.numCoins; i++) {
+        let coin_balance = convertBN(await SWAP.methods.balances(i).call(CALL_OPTION));
+        if(!deposit) {
+            if(coin_balance < real_values[i]) {
+                $("#nobalance-warning").show();
+                $("#nobalance-warning span").text($("label[for='currency_"+i+"']").text());
+            }
+            else
+                $("#nobalance-warning").hide();
+        }
+    }
+    if (deposit)
+        slippage = Sv / Sr
+    else
+        slippage = Sr / Sv;
+    slippage = slippage - 1;
+    slippage = slippage || 0
+    console.log("end calculating slippage", slippage)
+    if(slippage < -0.005) {
+        $("#bonus-window").hide();
+        $("#highslippage-warning").removeClass('info-message').addClass('simple-error');
+        $("#highslippage-warning .text").text("Warning! High slippage");
+        $("#highslippage-warning .percent").text((-slippage * 100).toFixed(3));
+        $("#highslippage-warning").show();
+    }
+    else if(slippage > 0) {
+        $("#highslippage-warning").hide();
+        $("#bonus-window").show();
+        $("#bonus-window span").text((slippage * 100).toFixed(3));
+    }
+    else if(slippage <= 0) {
+        $("#bonus-window").hide();
+        $("#highslippage-warning").removeClass('simple-error').addClass('info-message');
+        $("#highslippage-warning .text").text("Slippage");
+        $("#highslippage-warning .percent").text((-slippage * 100).toFixed(3));
+        $("#highslippage-warning").show();
+    }
+    else {
+        $("#bonus-window").hide();
+        $("#highslippage-warning").hide();
+    }
+}
+
+function valToBN(val, precision) {
+    let rounded = Math.floor(parseFloat(val) * 100)
+    return BN(rounded).mul(BN(cBN(precision).toString())).div(BN(100))
+}
 

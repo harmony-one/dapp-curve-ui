@@ -32,7 +32,7 @@
     <script src="dist/wallet.js"></script>
     <script src="common.js"></script>
     <script src="init.js"></script>
-    <script src="/deposit.js?rev=aa1c16c8af625725568bbeeaf84a219d"></script>
+    <script src="/deposit.js"></script>
 </head>
 <body>
 <div class="top-menu-bar">
@@ -41,12 +41,12 @@
 
     <a href="/">Buy and sell</a>
     <a href="/deposit.html">Deposit</a>
-<!--    <a href="/withdraw.html">Withdraw</a>-->
+    <a href="/withdraw.html">Withdraw</a>
 
 </div>
 <div id="screen">
     <div class="blue window">
-        <h1><img src="/logo.svg" alt="🌀 Curve" height="50"></h1>
+        <h1><img src="assets/logo.svg" alt="🌀 Curve" height="50"></h1>
     </div>
     <div class="error window half-width info" id="error-window"></div>
 
@@ -54,10 +54,6 @@
         <fieldset class="currencies">
             <legend>Currencies:</legend>
             <ul>
-                <li>
-                    <input id="sync-balances" type="checkbox" name="sync-balances" checked>
-                    <label for="sync-balances">Add all coins in a balanced proportion</label>
-                </li>
                 <li>
                     <label for="currency_0">Token A</label>
                     <input type="text" id="currency_0" disabled name="from_cur" value="0.00">
@@ -85,7 +81,6 @@
 
         <p style="text-align: center">
             <button id="add-liquidity">Deposit</button>
-            <button id="migrate-new">Migrate</button>
         <p class='simple-error' id='highslippage-warning'><span class='text'>Warning! High slippage</span>: <span class='percent'></span>%</p>
         <p class='success' id='bonus-window'>Bonus: <span></span>%</p>
         </p>
