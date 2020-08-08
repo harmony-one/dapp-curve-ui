@@ -3,8 +3,8 @@ const MAINNET_CONFIG = {
     shardID: 1,
     chainID: 1,
 
-    poolToken: "0x3f8d8f755bbb73e0e8f85a4009501fc5f213fc1e",
-    swapContract: "0xc08e2d250bd031409c9d87888356434c5384f188",
+    poolToken: "0xaad9e82f0ec07c4464e67deb628188c80998ec0f",
+    swapContract: "0x38c0ad6bccbfd8451ff5db44397ecf77b86a4baf",
 
     numCoins: 3,
     coinPrecision: [1e18, 1e18, 1e18],
