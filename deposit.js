@@ -75,7 +75,7 @@ async function init_ui() {
             if (el.val() > BALANCES[i])
                 el.css('background-color', 'red')
             else
-                el.css('background-color', 'blue');
+                el.css('background-color', '#036574');
         }));
     }
 
