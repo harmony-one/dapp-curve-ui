@@ -26,6 +26,7 @@ body {
 }
 
 .dai-icon {
+    height:20px;
     display: inline-block;
     width: 30px;
     background: red;
@@ -38,6 +39,7 @@ body {
 }
 
 .usdt-icon {
+    height:20px;
     display: inline-block;
     width: 30px;
     background: red;
@@ -52,6 +54,7 @@ body {
 .busd-icon {
     display: inline-block;
     width: 30px;
+    height:20px;
     background: red;
     padding: 0;
     margin: 0;
@@ -59,6 +62,12 @@ body {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: left;
+}
+
+.label-text {
+    display: inline-block;
+    vertical-align: top;
+    height:20px;
 }
 
 .arrows {

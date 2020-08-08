@@ -23,9 +23,12 @@
     <link rel="stylesheet" href="tvision.css?rev=3eda33f4fa54fe61a0ff034c823d8320"/>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
     <script type="text/javascript">
-        WebFont.load({google: {families:
+        WebFont.load({
+            google: {
+                families:
                     ["Open Sans:300,300italic,400,400italic,600,600italic,700,700italic,800,800italic", "Nunito Sans:regular,700,900", "Nunito:regular,700,800,900"]
-        }});
+            }
+        });
     </script>
 
 
@@ -45,8 +48,8 @@
 </head>
 <body>
 <div class="top-menu-bar">
-   <!-- <label for="hamburger" class='border-menu'></label>
-    <input type="checkbox" id="hamburger"/>-->
+    <!-- <label for="hamburger" class='border-menu'></label>
+     <input type="checkbox" id="hamburger"/>-->
 
     <a href="/">Buy and sell</a>
     <a href="/deposit.html">Deposit</a>
@@ -68,27 +71,40 @@
                         <input type="text" id="from_currency" disabled name="from_currency" value='0.00'>
                     </li>
                     <li class="li-flex">
-                        <div class="usdt-icon"></div>
                         <input type="radio" id="from_cur_0" name="from_cur" value="0">
-                        <label for="from_cur_0">USDT</label>
+                        <label for="from_cur_0">
+                            <div class="usdt-icon"></div>
+                            <div class="label-text">
+                                USDT
+                            </div>
+                        </label>
                     </li>
                     <li class="li-flex">
-                        <div class="dai-icon"></div>
                         <input type="radio" id="from_cur_1" name="from_cur" value="1">
-                        <label for="from_cur_1">DAI</label>
+                        <label for="from_cur_1">
+                            <div class="dai-icon"></div>
+                            <div class="label-text">
+                                DAI
+                            </div>
+                        </label>
                     </li>
                     <li class="li-flex">
-                        <div class="busd-icon"></div>
+
                         <input type="radio" id="from_cur_2" name="from_cur" value="2">
-                        <label for="from_cur_2">BUSDT</label>
+                        <label for="from_cur_2">
+                            <div class="busd-icon"></div>
+                            <div class="label-text">
+                                BUSDT
+                            </div>
+                        </label>
                     </li>
                 </ul>
             </fieldset>
 
             <fieldset style="float: left">
-            <div class="arrows">
-                <img src="assets/arrows.png">
-            </div>
+                <div class="arrows">
+                    <img src="assets/arrows.png">
+                </div>
             </fieldset>
 
             <fieldset style="float: left">
@@ -99,19 +115,31 @@
                         <input type="text" id="to_currency" name="to_currency" value="0.00" disabled>
                     </li>
                     <li class="li-flex">
-                        <div class="usdt-icon"></div>
                         <input type="radio" id="to_cur_0" name="to_cur" value="0">
-                        <label for="to_cur_0">USDT</label>
+                        <label for="to_cur_0">
+                            <div class="usdt-icon"></div>
+                            <div class="label-text">
+                                USDT
+                            </div>
+                        </label>
                     </li>
                     <li class="li-flex">
-                        <div class="dai-icon"></div>
                         <input type="radio" id="to_cur_1" name="to_cur" value="1">
-                        <label for="to_cur_1">DAI</label>
+                        <label for="to_cur_1">
+                            <div class="dai-icon"></div>
+                            <div class="label-text">
+                                DAI
+                            </div>
+                        </label>
                     </li>
                     <li class="li-flex">
-                        <div class="busd-icon"></div>
                         <input type="radio" id="to_cur_2" name="to_cur" value="2">
-                        <label for="to_cur_2">BUSD</label>
+                        <label for="to_cur_2">
+                            <div class="busd-icon"></div>
+                            <div class="label-text">
+                                BUSD
+                            </div>
+                        </label>
                     </li>
                 </ul>
             </fieldset>
@@ -121,31 +149,31 @@
 
             <fieldset>
                 <br/>
-            <div id='max_slippage'><span>Max slippage:</span>
+                <div id='max_slippage'><span>Max slippage:</span>
 
 
-                <input id="slippage05" type="radio" name="slippage" value='0.005'>
-                <label for="slippage05">0.5%</label>
+                    <input id="slippage05" type="radio" name="slippage" value='0.005'>
+                    <label for="slippage05">0.5%</label>
 
-                <input id="slippage1" type="radio" name="slippage" checked value='0.01'>
-                <label for="slippage1">1%</label>
+                    <input id="slippage1" type="radio" name="slippage" checked value='0.01'>
+                    <label for="slippage1">1%</label>
 
-                <input id="custom_slippage" type="radio" name="slippage" value='-'>
+                    <input id="custom_slippage" type="radio" name="slippage" value='-'>
 
-                <label for="custom_slippage" style="margin-left:4px;height:14px;position:absolute;">
-                <input type="text" id="custom_slippage_input"disabled name="custom_slippage_input"> %
-                </label>
+                    <label for="custom_slippage" style="margin-left:4px;height:14px;position:absolute;">
+                        <input type="text" id="custom_slippage_input" disabled name="custom_slippage_input"> %
+                    </label>
 
-            </div>
-            <ul>
-                <li>
-                    <input id="inf-approval" type="checkbox" name="inf-approval" checked>
-                    <label for="inf-approval">Infinite approval - trust this contract forever</label>
-                </li>
-            </ul>
-            <p class='trade-buttons'>
-                <button id="trade">Sell</button>
-            </p>
+                </div>
+                <ul>
+                    <li>
+                        <input id="inf-approval" type="checkbox" name="inf-approval" checked>
+                        <label for="inf-approval">Infinite approval - trust this contract forever</label>
+                    </li>
+                </ul>
+                <p class='trade-buttons'>
+                    <button id="trade">Sell</button>
+                </p>
 
             </fieldset>
         </div>
