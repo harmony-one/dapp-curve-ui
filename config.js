@@ -28,7 +28,7 @@ const TESTNET_CONFIG = {
     gasLimit: 0x6691b7,
 }
 
-const CONFIG = TESTNET_CONFIG
+const CONFIG = MAINNET_CONFIG
 
 let CALL_OPTION = {
     gasPrice: CONFIG.gasPrice,
