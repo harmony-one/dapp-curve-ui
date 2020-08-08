@@ -36,7 +36,7 @@ async function highlight_input() {
     if (el.val() > balance)
         el.css('background-color', 'red')
     else
-        el.css('background-color', 'blue');
+        el.css('background-color', '#036574');
 }
 
 function promiseTimeout(ms) {
@@ -51,7 +51,7 @@ async function set_to_amount() {
             $('#to_currency').val(dy);
             let exchange_rate = (dy_ / dx_).toFixed(4);
             if(exchange_rate <= 0.98) $("#to_currency").css('background-color', 'red')
-            else $("#to_currency").css('background-color', '#505070')
+            else $("#to_currency").css('background-color', '#036574')
             if(isNaN(exchange_rate)) exchange_rate = "Not available"
             var default_account = ETH_ADDR;
             let rawBalance = await UL_COINS[toCurrency].methods.balanceOf(default_account).call(CALL_OPTION);
