@@ -499,14 +499,17 @@ legend {
 
 .simple-error {
     background: red;
+    border-radius: 8px;
 }
 
 .info-message {
     background: gray;
+    border-radius: 8px;
 }
 
 .success {
     background: green;
+    border-radius: 8px;
 }
 
 .pooltext {
