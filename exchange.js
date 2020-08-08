@@ -13,7 +13,7 @@ async function set_from_amount(i) {
         if(!default_account) amount = 0
         $('#from_currency').val(amount.toFixed(2));
     }
-    console.log("max amount", amount.toFixed(2))
+    // console.log("max amount", amount.toFixed(2))
     $('fieldset:first .maxbalance span').text(amount.toFixed(2))
 }
 
@@ -95,18 +95,18 @@ function setAmountPromise() {
 }
 
 async function from_cur_handler() {
-    console.log("from_cur_handler")
+    // console.log("from_cur_handler")
     fromCurrency = $('input[type=radio][name=from_cur]:checked').val();
     toCurrency = $('input[type=radio][name=to_cur]:checked').val();
     var default_account = ETH_ADDR;
 
-    console.log("from_cur_handler 1")
+    // console.log("from_cur_handler 1")
     if ((await UL_COINS[fromCurrency].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION)).gt(max_allowance.div(BN(2))))
         $('#inf-approval').prop('checked', true)
     else
         $('#inf-approval').prop('checked', false);
 
-    console.log("from_cur_handler", 2)
+    // console.log("from_cur_handler", 2)
     await set_from_amount(fromCurrency);
     if (toCurrency == fromCurrency) {
         if (fromCurrency == 0) {
@@ -116,7 +116,7 @@ async function from_cur_handler() {
         }
         $("#to_cur_" + toCurrency).prop('checked', true);
     }
-    console.log("from_cur_handler", 3)
+    // console.log("from_cur_handler", 3)
     await set_to_amount();
 }
 
@@ -145,28 +145,28 @@ async function handle_trade() {
     if(max_slippage == '-') {
         max_slippage = $("#custom_slippage_input").val() / 100;
     }
-    console.log("handle_trader", 1)
+    // console.log("handle_trader", 1)
     if (b >= 0.001) {
         var dx = Math.floor($('#from_currency').val() * CONFIG.coinPrecision[i]);
         var min_dy = Math.floor($('#to_currency').val() * (1-max_slippage) * CONFIG.coinPrecision[j]);
         var deadline = Math.floor((new Date()).getTime() / 1000) + trade_timeout;
         dx = BN(dx.toString())
-        console.log("handle_trader", 2)
+        // console.log("handle_trader", 2)
         if ($('#inf-approval').prop('checked'))
             await ensure_underlying_allowance(i, max_allowance)
         else
             await ensure_underlying_allowance(i, dx);
-        console.log("handle_trader", 3)
+        // console.log("handle_trader", 3)
         min_dy = BN(min_dy.toString());
-        console.log("trade dx", dx.toString())
-        console.log("trade dy", min_dy.toString())
+        // console.log("trade dx", dx.toString())
+        // console.log("trade dy", min_dy.toString())
         let allowance = await COINS[i].methods.allowance(ETH_ADDR, CONFIG.swapContract).call(CALL_OPTION)
-        console.log("before exchange", allowance.toString())
+        // console.log("before exchange", allowance.toString())
         await SWAP.methods.exchange(i, j, BN(dx.toString()), BN(0)).send({
             gasPrice: CONFIG.gasPrice,
             gasLimit: CONFIG.gasLimit,
         });
-        console.log("handle_trader", 4)
+        // console.log("handle_trader", 4)
 
         await update_rate_and_fees();
         await from_cur_handler();

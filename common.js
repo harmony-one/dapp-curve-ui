@@ -14,7 +14,7 @@ async function init_contracts() {
     }
 
     let contractFactory = EXT.contracts
-    console.log("before create contract")
+    // console.log("before create contract")
     let swap = contractFactory.createContract(swap_abi, CONFIG.swapContract);
     let swapToken = contractFactory.createContract(ERC20_abi, CONFIG.poolToken);
 
@@ -25,13 +25,13 @@ async function init_contracts() {
     for (let i = 0; i < CONFIG.numCoins; i++) {
         promises.push(
             swap.methods.coins(i).call(CALL_OPTION).then((addr) => {
-                console.log("coin addr", addr)
+                // console.log("coin addr", addr)
                 coins[i] = contractFactory.createContract(ERC20_abi, addr)
             })
         )
         promises.push(
             swap.methods.underlying_coins(i).call(CALL_OPTION).then((addr) => {
-                console.log("underlying addr", addr)
+                // console.log("underlying addr", addr)
                 ul_coins[i] = contractFactory.createContract(ERC20_abi, addr)
             })
         )
@@ -52,8 +52,8 @@ function init_menu() {
 }
 
 async function update_rate_and_fees() {
-    console.log('=================')
-    console.log("update fee", SWAP)
+    // console.log('=================')
+    // console.log("update fee", SWAP)
     let swap = SWAP
     let swapToken = SWAP_TOKEN
     let numCoins = CONFIG.numCoins
@@ -72,7 +72,7 @@ async function update_rate_and_fees() {
     bal_info_fees.map((i, el)=>$(el).removeClass('loading line'))
     resolves.forEach((balance, i) => {
         BALANCES[i] = cBN(balance.toString()) / CONFIG.coinPrecision[i]
-        console.log(i, "balance:", BALANCES[i])
+        // console.log(i, "balance:", BALANCES[i])
         $(bal_info[i]).text(BALANCES[i].toFixed(2));
         total += BALANCES[i];
     })
@@ -80,11 +80,11 @@ async function update_rate_and_fees() {
 
     // Display fee and admin fees
     let rawFee = await swap.methods.fee().call(CALL_OPTION)
-    console.log("raw fee", rawFee.toString())
+    // console.log("raw fee", rawFee.toString())
     FEE = cBN(rawFee.toString()) / 1e10
 
     let rawAdminFee = await swap.methods.admin_fee().call(CALL_OPTION)
-    console.log("raw admin fee", rawAdminFee.toString())
+    // console.log("raw admin fee", rawAdminFee.toString())
     ADMIN_FEE = cBN(rawFee.toString()) / 1e10;
     $('#fee-info').text((FEE * 100).toFixed(3));
     $('#admin-fee-info').text((ADMIN_FEE * 100).toFixed(3));
@@ -149,15 +149,15 @@ async function ensure_underlying_allowance(i, _amount) {
     var rawAllowance = await UL_COINS[i].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION)
     let current_allowance = BN(rawAllowance)
 
-    console.log("cur allowance", current_allowance.toString())
+    // console.log("cur allowance", current_allowance.toString())
 
     if (current_allowance.eq(amount)){
-        console.log("allowance exactly the same. return")
+        // console.log("allowance exactly the same. return")
         return false;
     }
 
     if ((BN(_amount).eq(max_allowance)) & (current_allowance.gt(max_allowance.div(BN(2))))) {
-        console.log("infinite trust already given")
+        // console.log("infinite trust already given")
         return false;  // It does get spent slowly, but that's ok
     }
     // console.log("before reset allowance")
@@ -165,7 +165,7 @@ async function ensure_underlying_allowance(i, _amount) {
     //     console.log("resetting allowance")
     //     await approve(UL_COINS[i], '0', default_account);
 
-    console.log("approve", amount.toString())
+    // console.log("approve", amount.toString())
     await approve(UL_COINS[i], amount.toString(), default_account);
 }
 
@@ -179,7 +179,7 @@ async function ensure_allowance(amounts) {
         // Non-infinite
         for (let i=0; i < CONFIG.numCoins; i++) {
             if (allowances[i].lt(amounts[i])) {
-                console.log("ensure allowance", i, amounts[i].toString())
+                // console.log("ensure allowance", i, amounts[i].toString())
                 // if (allowances[i] > 0)
                 //     await approve(COINS[i], BN(0), default_account);
                 await approve(COINS[i], amounts[i], default_account);
@@ -203,28 +203,30 @@ async function approve(contract, amount, account) {
         .send({
             gasPrice: CONFIG.gasPrice,
             gasLimit: CONFIG.gasLimit,
-        }).then( () => {
-            console.log("proof sent")
-    })
+        })
+        // .then( () => {
+        //     console.log("proof sent")
+        // }
+    )
 }
 
 async function calc_slippage(deposit) {
-    console.log("calc_slippage")
+    // console.log("calc_slippage")
     var real_values = [...$("[id^=currency_]")].map((x,i) => +($(x).val()));
     var Sr = real_values.reduce((a,b) => a+b, 0);
 
     let values = new Array(CONFIG.numCoins)
     for (let i = 0; i < CONFIG.numCoins; i++) {
         values[i] = valToBN(real_values[i], CONFIG.coinPrecision[i])
-        console.log("values[i]", values[i].toString())
+        // console.log("values[i]", values[i].toString())
     }
     var token_amount = await SWAP.methods.calc_token_amount(values, deposit).call(CALL_OPTION);
     var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
 
-    console.log("virtual_price", virtual_price, virtual_price.toString())
-    console.log("token_amount", token_amount, token_amount.toString())
+    // console.log("virtual_price", virtual_price, virtual_price.toString())
+    // console.log("token_amount", token_amount, token_amount.toString())
     var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(36)));
-    console.log("bn Sv", Sv.toString())
+    // console.log("bn Sv", Sv.toString())
     Sv = convertBN(Sv)
 
     for(let i = 0; i < CONFIG.numCoins; i++) {
@@ -244,7 +246,8 @@ async function calc_slippage(deposit) {
         slippage = Sr / Sv;
     slippage = slippage - 1;
     slippage = slippage || 0
-    console.log("end calculating slippage", slippage)
+    // console.log("end calculating slip" +
+        "page", slippage)
     if(slippage < -0.005) {
         $("#bonus-window").hide();
         $("#highslippage-warning").removeClass('info-message').addClass('simple-error');

@@ -14,7 +14,7 @@ async function update_balances() {
     else {
         token_balance = 0;
     }
-    console.log("update balances", 1)
+    // console.log("update balances", 1)
     for (let i = 0; i < CONFIG.numCoins; i++) {
         BALANCES[i] = convertBN(await SWAP.methods.balances(i).call(CALL_OPTION)) / CONFIG.coinPrecision;
         if(!default_account) BALANCES[i] = 0
@@ -31,8 +31,8 @@ function handle_change_amounts() {
         let show_nobalance_i = 0;
         for(let i = 0; i < CONFIG.numCoins; i++) {
             let coin_balance = convertBN(await SWAP.methods.balances(i).call(CALL_OPTION)) ;
-            console.log("coin balance", coin_balance.toString())
-            console.log("real value", real_values[i].toString())
+            // console.log("coin balance", coin_balance.toString())
+            // console.log("real value", real_values[i].toString())
             if(coin_balance.lt(cBN(values[i]))) {
                 show_nobalance |= true;
                 show_nobalance_i = i;
@@ -84,7 +84,7 @@ function handle_change_share() {
     var share = $('#liquidity-share');
     var val = share.val();
 
-    console.log("handle change share")
+    // console.log("handle change share")
     share.css('background-color', '#036574');
     share.css('color', 'aqua');
     if (val == '---') {
@@ -100,13 +100,13 @@ function handle_change_share() {
         var cur = $('#currency_' + i);
         if ((val >=0) && (val <= 100)) {
             let share = token_balance / token_supply
-            console.log("token balance", token_balance.toString())
-            console.log("token supply", token_supply.toString())
+            // console.log("token balance", token_balance.toString())
+            // console.log("token supply", token_supply.toString())
             let portion = cBN(val) / cBN(100)
-            console.log("portion", portion.toString())
+            // console.log("portion", portion.toString())
             let liquidity = share * portion * BALANCES[i]
-            console.log("balances", BALANCES[i])
-            console.log("calculated portion", liquidity)
+            // console.log("balances", BALANCES[i])
+            // console.log("calculated portion", liquidity)
             cur.val(liquidity.toFixed(2))
         }
         else
@@ -127,8 +127,8 @@ async function handle_remove_liquidity() {
         let token_amount = await SWAP.methods.calc_token_amount(amounts, false).call(CALL_OPTION);
 
         token_amount = token_amount.mul(BN(101)).div(BN(1000))
-        console.log("wallet balance", token_balance.toString())
-        console.log("token amount", token_amount.toString())
+        // console.log("wallet balance", token_balance.toString())
+        // console.log("token amount", token_amount.toString())
         await SWAP.methods.remove_liquidity_imbalance(amounts, token_amount).send(CALL_OPTION);
     }
     else {
@@ -141,7 +141,7 @@ async function handle_remove_liquidity() {
 
         await SWAP.methods.remove_liquidity(amount, min_amounts).send(CALL_OPTION);
     }
-    console.log("liquidity removed")
+    // console.log("liquidity removed")
     if(share_val != '---') {
         handle_change_amounts();
     }
@@ -158,7 +158,7 @@ async function init_ui() {
     $('#liquidity-share').focus(handle_change_share);
     $('#liquidity-share').on('input', handle_change_share);
 
-    console.log("handle change share")
+    // console.log("handle change share")
     await update_rate_and_fees()
     await handle_change_share();
 
@@ -170,9 +170,9 @@ window.addEventListener('load', async () => {
     await initWallet();
     await init_contracts()
     await update_rate_and_fees();
-    console.log("update balances")
+    // console.log("update balances")
     await update_balances();
-    console.log("init ui")
+    // console.log("init ui")
     await init_ui();
 });
 

@@ -4,16 +4,16 @@ async function handle_sync_balances() {
 
     for (let i = 0; i < CONFIG.numCoins; i++) {
         let raw = await COINS[i].methods.balanceOf(default_account).call(CALL_OPTION)
-        console.log(raw.toString())
+        // console.log(raw.toString())
         wallet_balance[i] = convertBN(raw) / CONFIG.coinPrecision[i]
         if(!default_account) wallet_balance[i] = 0
     }
 
-    console.log(wallet_balance)
+    // console.log(wallet_balance)
 
     if (max_balances) {
 
-        console.log("MAX BALANCES flag set")
+        // console.log("MAX BALANCES flag set")
 
         $(".currencies input").prop('disabled', true);
         for (let i = 0; i < CONFIG.numCoins; i++) {
@@ -23,7 +23,7 @@ async function handle_sync_balances() {
         }
     } else{
         $(".currencies input").prop('disabled', false);
-        console.log("max balance disabled")
+        // console.log("max balance disabled")
     }
 
     for (let i = 0; i < CONFIG.numCoins; i++)
@@ -34,26 +34,26 @@ async function handle_add_liquidity() {
     var amounts = $("[id^=currency_]").toArray().map(x => $(x).val());
 
     for (let i = 0; i < CONFIG.numCoins; i++) {
-        console.log("raw amounts", amounts[i])
+        // console.log("raw amounts", amounts[i])
         amounts[i] = BN(amounts[i]).mul(BN(cBN(CONFIG.coinPrecision[i]).toString()))
-        console.log("add liquidity amount", amounts[i])
+        // console.log("add liquidity amount", amounts[i])
     }
 
-    console.log("before allowance ensure")
+    // console.log("before allowance ensure")
     if ($('#inf-approval').prop('checked'))
         await ensure_allowance(false)
     else
         await ensure_allowance(amounts);
-    console.log("after allowance ensured")
+    // console.log("after allowance ensured")
     var token_amount = 0;
     if(convertBN(await SWAP_TOKEN.methods.totalSupply().call(CALL_OPTION)) > 0) {
         token_amount = convertBN(await SWAP.methods.calc_token_amount(amounts, true).call(CALL_OPTION));
         token_amount = cBN(Math.floor(token_amount * 0.99).toString()).toFixed(0,1);
     }
     for (let i = 0; i < CONFIG.numCoins; i++) {
-        console.log("add liquidity", amounts[i].toString())
+        // console.log("add liquidity", amounts[i].toString())
         amounts[i] = BN(amounts[i].toString())
-        console.log("add liquidity", amounts[i].toString())
+        // console.log("add liquidity", amounts[i].toString())
     }
 
     await SWAP.methods.add_liquidity(amounts, BN(token_amount.toString())).send(CALL_OPTION);
