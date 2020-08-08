@@ -81,6 +81,13 @@
                     </li>
                 </ul>
             </fieldset>
+
+            <fieldset style="float: left">
+            <div class="arrows">
+                <img src="assets/arrows.png">
+            </div>
+            </fieldset>
+
             <fieldset style="float: left">
                 <legend>To:</legend>
                 <div class='maxbalance'>Max: <span></span></div>
@@ -105,6 +112,8 @@
             <div class='clearfix'></div>
             <p class='exchange-rate'>Exchange rate (including fees): <span id="exchange-rate"></span></p>
             <div id='max_slippage'><span>Max slippage:</span>
+
+
                 <input id="slippage05" type="radio" name="slippage" value='0.005'>
                 <label for="slippage05">0.5%</label>
 
@@ -112,9 +121,11 @@
                 <label for="slippage1">1%</label>
 
                 <input id="custom_slippage" type="radio" name="slippage" value='-'>
-                <label for="custom_slippage">
-                    <input type="text" id="custom_slippage_input" disabled name="custom_slippage_input"> %
+
+                <label for="custom_slippage" style="margin-left:4px;height:14px;">
+                <input type="text" id="custom_slippage_input"disabled name="custom_slippage_input"> %
                 </label>
+
             </div>
             <ul>
                 <li>

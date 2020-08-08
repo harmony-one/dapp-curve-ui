@@ -25,6 +25,15 @@ body {
     margin: 0;
 }
 
+.arrows {
+    padding:10px;
+}
+
+.arrows img {
+    width:40px;
+    margin-top:40px;
+}
+
 .logo {
     text-align: center;
     margin-top: 50px;
@@ -129,35 +138,10 @@ input:disabled {
 
 input[type=radio],
 input[type=checkbox] {
-    display: none;
-}
-
-input[type=radio] + label[for]:before,
-input[type=checkbox] + label[for]:before {
-    text-align: center;
     display: inline-block;
-    height: 1em;
-    width: 2em;
-}
-
-input[type=radio] + label[for]:before {
-    content: "( ) ";
-    cursor: pointer;
-}
-
-input[type=checkbox] + label[for]:before {
-    content: "[ ] ";
-    cursor: pointer;
-}
-
-input[type=radio]:checked + label[for]:before {
-    content: "(•) ";
-    cursor: pointer;
-}
-
-input[type=checkbox]:checked + label[for]:before {
-    content: "[X] ";
-    cursor: pointer;
+    background-color: white;
+    width:12px;
+    height:12px;
 }
 
 .window > textarea {
@@ -175,6 +159,8 @@ li {
     margin: 0;
     padding: 0;
     list-style: none;
+    line-height: 30px;
+
 }
 
 .top-menu-bar {
@@ -573,10 +559,6 @@ fieldset:nth-child(2) .maxbalance {
     padding-left: 4px;
 }
 
-#custom_slippage_input {
-    margin-left: -0.5em;
-}
-
 .exchange-rate {
     margin-top: 3px;
     margin-bottom: 10px;
@@ -601,4 +583,54 @@ fieldset:nth-child(2) .maxbalance {
     #max_slippage > * {
         width: 100%;
     }
+}
+
+
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: black;
+}
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #ddd;
+    border-radius: 100%;
+    background: #fff;
+}
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #036574;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+}
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
 }
