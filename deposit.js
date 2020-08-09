@@ -1,3 +1,9 @@
+let totalTxFee = 0;
+
+async function update_tx_fee(fee){
+    $("#tx_fee").html('Transaction fee spent: ' + fee + " ONE");
+}
+
 async function handle_sync_balances() {
     var max_balances = $('#max-balances').prop('checked');
     var default_account = ETH_ADDR;
@@ -40,10 +46,15 @@ async function handle_add_liquidity() {
     }
 
     // console.log("before allowance ensure")
+    $("#tx_status").html('Status: Approving token deposits...');
+    var feesSpent
     if ($('#inf-approval').prop('checked'))
-        await ensure_allowance(false)
+        feesSpent = await ensure_allowance(false)
     else
-        await ensure_allowance(amounts);
+        feesSpent = await ensure_allowance(amounts);
+    totalTxFee += feesSpent
+    await update_tx_fee(totalTxFee)
+    $("#tx_status").html('Status: Depositing tokens...');
     // console.log("after allowance ensured")
     var token_amount = 0;
     if(convertBN(await SWAP_TOKEN.methods.totalSupply().call(CALL_OPTION)) > 0) {
@@ -56,9 +67,17 @@ async function handle_add_liquidity() {
         // console.log("add liquidity", amounts[i].toString())
     }
 
-    await SWAP.methods.add_liquidity(amounts, BN(token_amount.toString())).send(CALL_OPTION);
+    let response = await SWAP.methods.add_liquidity(amounts, BN(token_amount.toString())).send(CALL_OPTION);
+    if (response.transaction == null) {
+        $("#tx_status").html('');
+        return
+    }
+    totalTxFee += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
     await handle_sync_balances();
     await update_rate_and_fees();
+    await update_tx_fee(totalTxFee);
+    $("#tx_status").html('Status: Successfully deposited tokens!');
+    $("#add-liquidity").html('Deposit More')
 }
 
 async function init_ui() {
@@ -90,6 +109,7 @@ async function init_ui() {
         uiStartTrade()
         handle_add_liquidity().finally(uiResolveTrade)
     });
+    await update_tx_fee(0);
 }
 
 window.addEventListener('load', async () => {
