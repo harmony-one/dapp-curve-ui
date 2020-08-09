@@ -85,7 +85,7 @@ async function update_rate_and_fees() {
 
     let rawAdminFee = await swap.methods.admin_fee().call(CALL_OPTION)
     // console.log("raw admin fee", rawAdminFee.toString())
-    ADMIN_FEE = cBN(rawFee.toString()) / 1e10;
+    ADMIN_FEE = cBN(rawAdminFee.toString()) / 1e10;
     $('#fee-info').text((FEE * 100).toFixed(3));
     $('#admin-fee-info').text((ADMIN_FEE * 100).toFixed(3));
 
