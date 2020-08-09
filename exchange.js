@@ -192,7 +192,10 @@ async function init_ui() {
     $('fieldset:first .maxbalance').click(set_max_balance)
     $("#max_slippage input[type='radio']").click(change_max_slippage)
 
-    $("#trade").click(handle_trade);
+    $("#trade").click(async function() {
+        uiStartTrade()
+        handle_trade().finally(uiResolveTrade)
+    });
 
     await update_rate_and_fees()
     await from_cur_handler();

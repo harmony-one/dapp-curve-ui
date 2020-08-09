@@ -162,7 +162,10 @@ async function init_ui() {
     await update_rate_and_fees()
     await handle_change_share();
 
-    $("#remove-liquidity").click(handle_remove_liquidity);
+    $("#remove-liquidity").click(async function() {
+        uiStartTrade()
+        handle_remove_liquidity().finally(uiResolveTrade)
+    });
 }
 
 window.addEventListener('load', async () => {

@@ -86,7 +86,10 @@ async function init_ui() {
 
     $('#sync-balances').change(handle_sync_balances);
     $('#max-balances').change(handle_sync_balances);
-    $("#add-liquidity").click(handle_add_liquidity);
+    $("#add-liquidity").click(async function() {
+        uiStartTrade()
+        handle_add_liquidity().finally(uiResolveTrade)
+    });
 }
 
 window.addEventListener('load', async () => {

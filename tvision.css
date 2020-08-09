@@ -757,3 +757,48 @@ fieldset:nth-child(2) .maxbalance {
     -webkit-transform: scale(1);
     transform: scale(1);
 }
+.load-container {
+    margin: auto;
+    width: 20px;
+}
+.loader {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.footer {
+    width:100%;
+    float: left;
+    background-color: #e1f6f7;
+    color: darkgrey;
+    text-align: center;
+    padding: 10px;
+    height: 100px;
+}
+.column {
+    float: left;
+    width: 33%;
+    background-color: inherit
+}
+
+.copy-button {
+    color: midnightblue;
+    background-color: inherit;
+    border-radius: 5px;
+    padding:3px;
+    border: 0px;
+
+    font-size:14px;
+    font-family: inherit;
+    padding: 0;
+    font-weight: bold;
+}
+
+
