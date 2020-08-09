@@ -18,13 +18,13 @@ async function getExtension(config) {
         ext = await new HarmonyExtension(window.onewallet)
         // Hack because mathwallet instantiation is not good.
         // WARNING: order matters
-        console.log("creating a new provider")
+        // console.log("creating a new provider")
         let p = new Provider(config.endpoint)
-        console.log(p.provider.url)
+        // console.log(p.provider.url)
 
-        console.log("after")
+        // console.log("after")
         ext.provider = new Provider(config.endpoint).provider
-        console.log(ext.provider.url)
+        // console.log(ext.provider.url)
         ext.messenger = new Messenger(ext.provider, ChainType.Harmony, config.chainID)
         ext.setShardID(config.shard)
         ext.wallet.messenger = ext.messenger

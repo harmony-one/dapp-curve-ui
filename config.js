@@ -5,6 +5,7 @@ const MAINNET_CONFIG = {
 
     poolToken: "0xaad9e82f0ec07c4464e67deb628188c80998ec0f",
     swapContract: "0x38c0ad6bccbfd8451ff5db44397ecf77b86a4baf",
+    tokenSymbol: "1DAI + hUSDC + hUSDT",
 
     numCoins: 3,
     coinPrecision: [1e18, 1e18, 1e18],
@@ -20,6 +21,7 @@ const TESTNET_CONFIG = {
 
     poolToken: "0xed2d6c263a0207a5b7512c20a464745d800ccf23",
     swapContract: "0x486ffe573dea3c47fe9f14be4bd2542616f872e1",
+    tokenSymbol: "1DAI + hUSDC + hUSDT",
 
     numCoins: 3,
     coinPrecision: [1e18, 1e18, 1e18],

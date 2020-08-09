@@ -74,7 +74,7 @@
                     <li class="li-flex">
                         <input type="radio" id="from_cur_0" name="from_cur" value="0">
                         <label for="from_cur_0">
-                            <div class="usdt-icon"></div>
+                            <div class="dai-icon"></div>
                             <div class="label-text">
                                 1DAI
                             </div>
@@ -83,7 +83,7 @@
                     <li class="li-flex">
                         <input type="radio" id="from_cur_1" name="from_cur" value="1">
                         <label for="from_cur_1">
-                            <div class="dai-icon"></div>
+                            <div class="usdt-icon"></div>
                             <div class="label-text">
                                 hUSDT
                             </div>
@@ -118,7 +118,7 @@
                     <li class="li-flex">
                         <input type="radio" id="to_cur_0" name="to_cur" value="0">
                         <label for="to_cur_0">
-                            <div class="usdt-icon"></div>
+                            <div class="dai-icon"></div>
                             <div class="label-text">
                                 1DAI
                             </div>
@@ -127,7 +127,7 @@
                     <li class="li-flex">
                         <input type="radio" id="to_cur_1" name="to_cur" value="1">
                         <label for="to_cur_1">
-                            <div class="dai-icon"></div>
+                            <div class="usdt-icon"></div>
                             <div class="label-text">
                                 hUSDT
                             </div>
@@ -172,7 +172,12 @@
                         <label for="inf-approval">Infinite approval - trust this contract forever</label>
                     </li>
                 </ul>
-                <p class='trade-buttons'>
+                <p style="text-align:center">
+                    <div id="tx_loader" class="load-container" style="display:none">
+                        <div class="loader"></div>
+                    </div>
+                </p>
+                <p id="trade-button" class='trade-buttons'>
                     <button id="trade">Sell</button>
                 </p>
                 <div id="tx_status"></div>
@@ -205,6 +210,30 @@
         </ul>
     </fieldset>
 </div>
+
+<div style="padding: 50px"></div>
+
+<div class="footer">
+    <div class="column">
+        <p style="padding: 10px 30px; width: 350px; text-align: left">
+            All contracts sourced from <a href="https://github.com/curvefi/curve-contract">curve.fi</a></br> with minimum modification.
+        </p>
+
+    </div>
+    <div class="column">
+        <p style="padding: 10px; width: 350px; text-align: center">
+            <b>Warning:</b> This is an experimental alpha version of Curve.fi on Harmony. Trade at your own risk.
+        </p>
+    </div>
+    <div class="column">
+        <p style="padding: 5px 30px; width: 350px; text-align: right">
+            Pool token address: <span style="padding-left: 20px;"><button class="copy-button" onclick="copyTokenAddress(event)">0xaad9e82f0...98ec0f</button></br>
+            Pool token symbol: <span style="padding-left: 7px;"><button class="copy-button" onclick="copyTokenSymbol(event)">1DAI + hUSDC + hUSDT</button>
+        </p>
+    </div>
+</div>
+
+
 
 </body>
 </html>

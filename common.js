@@ -284,3 +284,22 @@ function valToBN(val, precision) {
     return BN(rounded).mul(BN(cBN(precision).toString())).div(BN(100))
 }
 
+
+function uiStartTrade() {
+    $("#trade-button").hide()
+    $("#tx_loader").show()
+}
+
+function uiResolveTrade() {
+    $("#trade-button").show()
+    $("#tx_loader").hide()
+}
+
+function copyTokenAddress(evt) {
+    navigator.clipboard.writeText(CONFIG.poolToken)
+}
+
+function copyTokenSymbol(evt) {
+    navigator.clipboard.writeText(CONFIG.tokenSymbol)
+}
+
