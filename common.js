@@ -306,4 +306,3 @@ function copyTokenAddress(evt) {
 function copyTokenSymbol(evt) {
     navigator.clipboard.writeText(CONFIG.tokenSymbol)
 }
-
