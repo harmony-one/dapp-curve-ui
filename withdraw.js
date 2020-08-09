@@ -1,5 +1,6 @@
 var token_balance;
 var token_supply;
+let totalTxFee = 0;
 
 async function update_balances() {
     var default_account = ETH_ADDR;
@@ -21,6 +22,10 @@ async function update_balances() {
     }
     token_supply = convertBN(await SWAP_TOKEN.methods.totalSupply().call(CALL_OPTION));
     FEE = parseInt(await SWAP.methods.fee().call(CALL_OPTION)) / 1e10;
+}
+
+async function update_tx_fee(fee){
+    $("#tx_fee").html('Transaction fee spent: ' + fee + " ONE");
 }
 
 function handle_change_amounts() {
@@ -138,8 +143,13 @@ async function handle_remove_liquidity() {
         var amount = cBN(Math.floor(share_val / 100 * token_balance).toString()).toFixed(0,1);
         if (share_val == 100)
             amount = await SWAP_TOKEN.methods.balanceOf(default_account).call(CALL_OPTION);
-
-        await SWAP.methods.remove_liquidity(amount, min_amounts).send(CALL_OPTION);
+        $("#tx_status").html('Status: Withdrawing...');
+        let response = await SWAP.methods.remove_liquidity(amount, min_amounts).send(CALL_OPTION);
+        if (response.transaction == null) {
+            $("#tx_status").html('');
+            return
+        }
+        totalTxFee += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
     }
     // console.log("liquidity removed")
     if(share_val != '---') {
@@ -147,6 +157,9 @@ async function handle_remove_liquidity() {
     }
     await update_balances();
     await update_rate_and_fees();
+    await update_tx_fee(totalTxFee);
+    $("#tx_status").html('Status: Successfully withdrew tokens!');
+    $("#remove-liquidity").html('Withdraw More')
 }
 
 async function init_ui() {
@@ -166,6 +179,7 @@ async function init_ui() {
         uiStartTrade()
         handle_remove_liquidity().finally(uiResolveTrade)
     });
+    await update_tx_fee(0);
 }
 
 window.addEventListener('load', async () => {
