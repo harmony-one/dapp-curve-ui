@@ -117,7 +117,11 @@
         <p><b>Admin fee:</b> <span id='admin-fee-info'></span>%</p>
     </fieldset>
     <fieldset id="lp-info-container">
-        <legend>My share:</legend>
+        <legend>
+            My share:
+            <span style="padding-left: 7px"></span>
+            <span id="my-share"></span>
+        </legend>
         <ul id='lp-info'>
             <li><b>1DAI:</b> <span></span></li>
             <li><b>hUSDT:</b> <span></span></li>
@@ -143,7 +147,7 @@
         </p>
     </div>
     <div class="column">
-        <p style="padding: 5px 30px; width: 350px; text-align: right; margin: 0 auto;">
+    <p style="padding: 5px 30px; width: 350px; text-align: right; margin: 0 auto;">
             Pool token address: <span style="padding-left: 20px;"><button class="copy-button" onclick="copyTokenAddress(event)">0xaad9e82f0...98ec0f</button></br>
             Pool token symbol: <span style="padding-left: 7px;"><button class="copy-button" onclick="copyTokenSymbol(event)">1DAI + hUSDC + hUSDT</button>
         </p>

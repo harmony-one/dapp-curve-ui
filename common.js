@@ -100,6 +100,10 @@ async function update_rate_and_fees() {
     if (token_balance > 0) {
         let raw_token_supply = await swapToken.methods.totalSupply().call(CALL_OPTION)
         let token_supply = cBN(raw_token_supply.toString());
+
+        let myShare = (token_balance / token_supply * 100).toFixed(3)
+        $('#my-share').text(myShare + ' %')
+
         let l_info = $('#lp-info li span');
         total = 0;
         for (let i=0; i < numCoins; i++) {
