@@ -166,11 +166,12 @@ async function ensure_underlying_allowance(i, _amount) {
     //     await approve(UL_COINS[i], '0', default_account);
 
     // console.log("approve", amount.toString())
-    await approve(UL_COINS[i], amount.toString(), default_account);
+    return await approve(UL_COINS[i], amount.toString(), default_account);
 }
 
 async function ensure_allowance(amounts) {
     var default_account = ETH_ADDR;
+    var total_fees_spent = 0
     var allowances = new Array(CONFIG.numCoins);
     for (let i=0; i < CONFIG.numCoins; i++)
         allowances[i] = await COINS[i].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION);
@@ -182,7 +183,10 @@ async function ensure_allowance(amounts) {
                 // console.log("ensure allowance", i, amounts[i].toString())
                 // if (allowances[i] > 0)
                 //     await approve(COINS[i], BN(0), default_account);
-                await approve(COINS[i], amounts[i], default_account);
+                let response = await approve(COINS[i], amounts[i], default_account);
+                if (response.transaction != null){
+                    total_fees_spent += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
+                }
             }
         }
     }
@@ -192,10 +196,14 @@ async function ensure_allowance(amounts) {
             if (allowances[i].lt(max_allowance.div(BN(2)))) {
                 // if (allowances[i] > 0)
                 //     await approve(COINS[i], BN(0), default_account);
-                await approve(COINS[i], BN(max_allowance.toString()), default_account);
+                let response = await approve(COINS[i], BN(max_allowance.toString()), default_account);
+                if (response.transaction != null){
+                    total_fees_spent += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
+                }
             }
         }
     }
+    return total_fees_spent
 }
 
 async function approve(contract, amount, account) {

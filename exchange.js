@@ -1,5 +1,6 @@
 let fromCurrency;
 let toCurrency;
+let totalTxFee = 0;
 
 async function set_from_amount(i) {
     var default_account = ETH_ADDR;
@@ -94,6 +95,10 @@ function setAmountPromise() {
     return makeCancelable(promise);
 }
 
+async function update_tx_fee(fee){
+    $("#tx_fee").html('Transaction fee spent: ' + fee + " ONE");
+}
+
 async function from_cur_handler() {
     // console.log("from_cur_handler")
     fromCurrency = $('input[type=radio][name=from_cur]:checked').val();
@@ -145,6 +150,7 @@ async function handle_trade() {
     if(max_slippage == '-') {
         max_slippage = $("#custom_slippage_input").val() / 100;
     }
+    await update_tx_fee(totalTxFee);
     // console.log("handle_trader", 1)
     if (b >= 0.001) {
         var dx = Math.floor($('#from_currency').val() * CONFIG.coinPrecision[i]);
@@ -152,24 +158,41 @@ async function handle_trade() {
         var deadline = Math.floor((new Date()).getTime() / 1000) + trade_timeout;
         dx = BN(dx.toString())
         // console.log("handle_trader", 2)
+        var response
+        $("#tx_status").html('Status: Approving token exchange...');
         if ($('#inf-approval').prop('checked'))
-            await ensure_underlying_allowance(i, max_allowance)
+            response = await ensure_underlying_allowance(i, max_allowance)
         else
-            await ensure_underlying_allowance(i, dx);
+            response = await ensure_underlying_allowance(i, dx);
+        if (response.transaction == null) {
+            $("#tx_status").html('');
+            return
+        }
+        totalTxFee += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
+        await update_tx_fee(totalTxFee)
+        $("#tx_status").html('Status: Exchanging tokens...');
         // console.log("handle_trader", 3)
         min_dy = BN(min_dy.toString());
         // console.log("trade dx", dx.toString())
         // console.log("trade dy", min_dy.toString())
         let allowance = await COINS[i].methods.allowance(ETH_ADDR, CONFIG.swapContract).call(CALL_OPTION)
         // console.log("before exchange", allowance.toString())
-        await SWAP.methods.exchange(i, j, BN(dx.toString()), BN(0)).send({
+        response = await SWAP.methods.exchange(i, j, BN(dx.toString()), BN(0)).send({
             gasPrice: CONFIG.gasPrice,
             gasLimit: CONFIG.gasLimit,
         });
+        if (response.transaction == null) {
+            $("#tx_status").html('');
+            return
+        }
         // console.log("handle_trader", 4)
+        totalTxFee += CONFIG.gasPrice * response.transaction.receipt.gasUsed * 1e-18
 
         await update_rate_and_fees();
         await from_cur_handler();
+        await update_tx_fee(totalTxFee);
+        $("#tx_status").html('Status: Successfully exchanged tokens!');
+        $("#trade").html('Sell More')
     }
 }
 
@@ -196,6 +219,7 @@ async function init_ui() {
 
     await update_rate_and_fees()
     await from_cur_handler();
+    await update_tx_fee(0);
     $("#from_currency").on("input", highlight_input);
 }
 
