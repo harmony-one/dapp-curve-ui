@@ -151,7 +151,7 @@ button,
     font-weight: normal;
     color: white;
     font-family: inherit;
-    padding: 16px;
+    padding: 8px 16px;
     position: relative;
     min-width: 70px;
     background-color: rgb(0, 173, 232);
