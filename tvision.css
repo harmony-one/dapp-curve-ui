@@ -5,7 +5,7 @@
 }
 
 .p-c {
-    color: #036574
+    color: rgb(0, 173, 232);
 }
 
 html {
@@ -151,12 +151,13 @@ button,
     font-weight: normal;
     color: white;
     font-family: inherit;
-    font-size: 16px;
-    background: transparent;
-    padding: 0 1em;
+    padding: 16px;
     position: relative;
-    border: 1px solid white;
-    border-radius: 16px;
+    min-width: 70px;
+    background-color: rgb(0, 173, 232);
+    color: white;
+    border-radius: 4px;
+    font-size: 15px;
 }
 
 
@@ -219,7 +220,7 @@ li {
     top: 0;
     left: 0;
     right: 0;
-    background: #036574;
+    background: rgb(0, 173, 232);
     color: white;
     font-weight: bolder;
     text-align: center;
@@ -301,7 +302,7 @@ p.exchange-rate {
 }
 
 #exchange-rate {
-    color: #036574;
+    color: rgb(0, 173, 232);
     font-weight: bold;
 }
 
@@ -502,17 +503,17 @@ legend {
 
 .simple-error {
     background: red;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .info-message {
     background: gray;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .success {
     background: green;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .pooltext {
@@ -694,7 +695,7 @@ fieldset:nth-child(2) .maxbalance {
     content: '';
     width: 12px;
     height: 12px;
-    background: #036574;
+    background: rgb(0, 173, 232);
     position: absolute;
     top: 4px;
     left: 4px;
@@ -744,7 +745,7 @@ fieldset:nth-child(2) .maxbalance {
     content: '';
     width: 12px;
     height: 12px;
-    background: #036574;
+    background: rgb(0, 173, 232);
     position: absolute;
     top: 4px;
     left: 4px;
