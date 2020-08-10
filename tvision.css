@@ -9,13 +9,9 @@
 }
 
 html {
-    background-image: url(assets/bg.png);
-    background-position: top;
-    background-repeat: round;
-    background-attachment: fixed;
-    width: 100%;
+    background-color: rgb(247, 248, 249);
     font-family: Nunito, sans-serif !important;
-    font-weight: bold;
+    font-weight: normal;
     font-size: 10pt;
     margin: 0;
     height: 100%;
@@ -93,13 +89,13 @@ body {
     cursor: default;
     margin: 2em auto;
     width: 80%;
-    background: rgba(255, 255, 255, .5);
-    opacity: 1;
+    background: white;
     color: black;
     border: none;
     padding: 1em;
-    border-radius: 8px;
+    border-radius: 5px;
     max-width: 640px;
+    border: 1px solid #dedede;
 }
 
 
@@ -165,12 +161,13 @@ button,
 
 
 input, textarea {
-    background: #036574 !important;
-    color: white;
+    background: white !important;
+    border: 1px solid rgb(231, 236, 247);
+    border-radius: 4px;
+    color: black;
     width: 100%;
     max-width: 100%;
     font-size: 12pt;
-    border: none !important;
     padding: 3px !important;
 }
 
@@ -180,9 +177,10 @@ input {
 }
 
 input:disabled {
-    background: #036574 !important;
-    color: white;
+    background: rgb(231, 236, 247) !important;
+    color: black !important;
     border: none;
+    cursor: not-allowed;
 }
 
 input[type=radio],
@@ -225,6 +223,7 @@ li {
     color: white;
     font-weight: bolder;
     text-align: center;
+    font-size:16px;
 }
 
 .top-menu-bar a, .poolsdialog a .top-menu-bar .icon-container {
