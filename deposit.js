@@ -82,6 +82,7 @@ async function handle_add_liquidity() {
 
 async function init_ui() {
     let infapproval = true;
+    console.log("attaching")
     for (let i = 0; i < CONFIG.numCoins; i++) {
         var default_account = ETH_ADDR;
         if ((await COINS[i].methods.allowance(default_account, CONFIG.swapContract).call(CALL_OPTION)).lte(max_allowance.div(BN(2))))
@@ -97,7 +98,7 @@ async function init_ui() {
                 el.css('background-color', '#036574');
         }));
     }
-
+    console.log("attaching")
     if (infapproval)
         $('#inf-approval').prop('checked', true)
     else
@@ -105,7 +106,9 @@ async function init_ui() {
 
     $('#sync-balances').change(handle_sync_balances);
     $('#max-balances').change(handle_sync_balances);
+    console.log("attaching")
     $("#add-liquidity").click(async function() {
+        console.log("onclick workingg")
         uiStartTrade()
         handle_add_liquidity().finally(uiResolveTrade)
     });
@@ -120,7 +123,7 @@ window.addEventListener('load', async () => {
         await init_contracts();
         await update_rate_and_fees();
         await handle_sync_balances();
-        await calc_slippage(true);
+        // await calc_slippage(true);
         
         await init_ui();
         $("#max-balances").prop('disabled', false)

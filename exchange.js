@@ -80,12 +80,16 @@ function setAmountPromise() {
         var i = fromCurrency;
         var j = toCurrency;
         var b = parseInt(await SWAP.methods.balances(i).call(CALL_OPTION));
+        console.log(b)
+        
         if (b >= 0.001) {
             // In c-units
             var dx_ = $('#from_currency').val();
+            console.log(dx_)
             var dx = cBN(Math.round(dx_ * CONFIG.coinPrecision[i])).toFixed(0,1);
             var dy_ = parseInt(await SWAP.methods.get_dy_underlying(i, j, dx).call(CALL_OPTION)) / CONFIG.coinPrecision[j];
             var dy = dy_.toFixed(2);
+            console.log(dy,dy_,dx_)
             resolve([dy, dy_, dx_])
         }
         else {

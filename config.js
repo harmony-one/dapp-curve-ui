@@ -3,12 +3,12 @@ const MAINNET_CONFIG = {
     shardID: 1,
     chainID: 1,
 
-    poolToken: "0xaad9e82f0ec07c4464e67deb628188c80998ec0f",
-    swapContract: "0x38c0ad6bccbfd8451ff5db44397ecf77b86a4baf",
-    tokenSymbol: "1DAI + hUSDC + hUSDT",
+    poolToken: "0xf6f796158afad13472158d4aa5448ffe102f78f6",
+    swapContract: "0x49c8f07d873b654db2df2fef917d9bcf09625aca",
+    tokenSymbol: "1DAI + hUSDC + hUSDT + 1BUSD",
 
-    numCoins: 3,
-    coinPrecision: [1e18, 1e18, 1e18],
+    numCoins: 4,
+    coinPrecision: [1e18, 1e18, 1e18, 1e18],
 
     gasPrice: 0x4a817c800,
     gasLimit: 0x6691b7,
@@ -19,18 +19,19 @@ const TESTNET_CONFIG = {
     shardID: 0,
     chainID: 2,
 
-    poolToken: "0xed2d6c263a0207a5b7512c20a464745d800ccf23",
-    swapContract: "0x486ffe573dea3c47fe9f14be4bd2542616f872e1",
-    tokenSymbol: "1DAI + hUSDC + hUSDT",
+    poolToken: "0x6e5bd0fa3afaad969f41586078712dc29da17d3c",
+    swapContract: "0x52358bba21ee6ff6703f7be29845bdced180d6cb",
+    tokenSymbol: "1DAI + hUSDC + hUSDT + 1BUSD",
 
-    numCoins: 3,
-    coinPrecision: [1e18, 1e18, 1e18],
+    numCoins: 4,
+    coinPrecision: [1e18, 1e18, 1e18, 1e18],
 
     gasPrice: 0x4a817c800,
     gasLimit: 0x6691b7,
 }
 
-const CONFIG = MAINNET_CONFIG
+// const CONFIG = MAINNET_CONFIG
+const CONFIG = TESTNET_CONFIG
 
 let CALL_OPTION = {
     gasPrice: CONFIG.gasPrice,
