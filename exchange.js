@@ -65,7 +65,9 @@ async function set_to_amount() {
             $('#from_currency').prop('disabled', false);
         })
         .catch(err => {
-            console.error(err);
+            // console.error(err);
+            $('fieldset:nth-child(2) .maxbalance span').text(0)
+            $('#exchange-rate').text("0");
             $('#from_currency').prop('disabled', true);
 
         })
@@ -93,7 +95,7 @@ function setAmountPromise() {
             resolve([dy, dy_, dx_])
         }
         else {
-            reject()
+            reject("bValue")
         }
     })
     return makeCancelable(promise);

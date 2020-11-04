@@ -363,8 +363,8 @@ function init_menu() {
 }
 
 async function update_rate_and_fees() {
-    // console.log('=================')
-    // console.log("update fee", SWAP)
+    console.log('=================')
+    console.log("update fee", SWAP)
     let swap = SWAP
     let swapToken = SWAP_TOKEN
     let numCoins = CONFIG.numCoins
