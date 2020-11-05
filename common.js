@@ -542,7 +542,16 @@ async function calc_slippage(deposit) {
         values[i] = valToBN(real_values[i], CONFIG.coinPrecision[i])
     }
     var token_amount = await SWAP.methods.calc_token_amount(values, deposit).call(CALL_OPTION);
+
+    console.log(SWAP.methods);
+    
+    console.log(token_amount + "hehehehehhe")
+
+
     console.log("token_amount", token_amount, token_amount.toString())
+
+
+
     var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
     // console.log("token amount" , token_amount)
     // console.log("virtual_price", virtual_price)
