@@ -4,6 +4,317 @@ const trade_timeout = 1800;
 const max_allowance = BN(2).pow(BN(256)).sub(BN(1));
 let wallet_balance = new Array(CONFIG.numCoins)
 
+const ERC20_abi = [
+    {
+      "name": "Transfer",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_from",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "_to",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "_value",
+          "indexed": false
+        }
+      ],
+      "anonymous": false,
+      "type": "event"
+    },
+    {
+      "name": "Approval",
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_owner",
+          "indexed": true
+        },
+        {
+          "type": "address",
+          "name": "_spender",
+          "indexed": true
+        },
+        {
+          "type": "uint256",
+          "name": "_value",
+          "indexed": false
+        }
+      ],
+      "anonymous": false,
+      "type": "event"
+    },
+    {
+      "outputs": [],
+      "inputs": [
+        {
+          "type": "string",
+          "name": "_name"
+        },
+        {
+          "type": "string",
+          "name": "_symbol"
+        },
+        {
+          "type": "uint256",
+          "name": "_decimals"
+        },
+        {
+          "type": "uint256",
+          "name": "_supply"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "name": "set_minter",
+      "outputs": [
+        {
+          "type": "address",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_minter"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 35892
+    },
+    {
+      "name": "totalSupply",
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 581
+    },
+    {
+      "name": "allowance",
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_owner"
+        },
+        {
+          "type": "address",
+          "name": "_spender"
+        }
+      ],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 919
+    },
+    {
+      "name": "transfer",
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_to"
+        },
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 73602
+    },
+    {
+      "name": "transferFrom",
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_from"
+        },
+        {
+          "type": "address",
+          "name": "_to"
+        },
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 73679
+    },
+    {
+      "name": "approve",
+      "outputs": [
+        {
+          "type": "bool",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_spender"
+        },
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 37883
+    },
+    {
+      "name": "mint",
+      "outputs": [],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_to"
+        },
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 73933
+    },
+    {
+      "name": "burn",
+      "outputs": [],
+      "inputs": [
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 74823
+    },
+    {
+      "name": "burnFrom",
+      "outputs": [],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "_to"
+        },
+        {
+          "type": "uint256",
+          "name": "_value"
+        }
+      ],
+      "constant": false,
+      "payable": false,
+      "type": "function",
+      "gas": 74896
+    },
+    {
+      "name": "name",
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 5453
+    },
+    {
+      "name": "symbol",
+      "outputs": [
+        {
+          "type": "string",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 5106
+    },
+    {
+      "name": "decimals",
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "inputs": [],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 911
+    },
+    {
+      "name": "balanceOf",
+      "outputs": [
+        {
+          "type": "uint256",
+          "name": ""
+        }
+      ],
+      "inputs": [
+        {
+          "type": "address",
+          "name": "arg0"
+        }
+      ],
+      "constant": true,
+      "payable": false,
+      "type": "function",
+      "gas": 1095
+    }
+  ];
+
 function convertBN(val) {
     return cBN(val.toString())
 }
@@ -52,8 +363,8 @@ function init_menu() {
 }
 
 async function update_rate_and_fees() {
-    // console.log('=================')
-    // console.log("update fee", SWAP)
+    console.log('=================')
+    console.log("update fee", SWAP)
     let swap = SWAP
     let swapToken = SWAP_TOKEN
     let numCoins = CONFIG.numCoins
@@ -229,13 +540,21 @@ async function calc_slippage(deposit) {
     let values = new Array(CONFIG.numCoins)
     for (let i = 0; i < CONFIG.numCoins; i++) {
         values[i] = valToBN(real_values[i], CONFIG.coinPrecision[i])
-        // console.log("values[i]", values[i].toString())
     }
     var token_amount = await SWAP.methods.calc_token_amount(values, deposit).call(CALL_OPTION);
-    var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
 
-    // console.log("virtual_price", virtual_price, virtual_price.toString())
-    // console.log("token_amount", token_amount, token_amount.toString())
+    console.log(SWAP.methods);
+    
+    console.log(token_amount + "hehehehehhe")
+
+
+    console.log("token_amount", token_amount, token_amount.toString())
+
+
+
+    var virtual_price = await SWAP.methods.get_virtual_price().call(CALL_OPTION);
+    // console.log("token amount" , token_amount)
+    // console.log("virtual_price", virtual_price)
     var Sv = virtual_price.mul(token_amount).div(BN(10).pow(BN(36)));
     // console.log("bn Sv", Sv.toString())
     Sv = convertBN(Sv)

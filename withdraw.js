@@ -126,7 +126,7 @@ async function handle_remove_liquidity() {
     var share_val = share.val();
     var amounts = userInputToBNWithdraw()
     var min_amounts = []
-
+    var default_account = ETH_ADDR;
     // var default_account = (await web3provider.eth.getAccounts())[0];
     if (share_val == '---') {
         let token_amount = await SWAP.methods.calc_token_amount(amounts, false).call(CALL_OPTION);
